@@ -38,6 +38,12 @@ export function TaskList() {
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [taskToDelete, setTaskToDelete] = useState<Task | null>(null);
 
+  const todoTasks = tasks?.filter((t) => t.status === TaskStatus.TODO);
+  const inProgressTasks = tasks?.filter(
+    (t) => t.status === TaskStatus.IN_PROGRESS
+  );
+  const doneTasks = tasks?.filter((t) => t.status === TaskStatus.DONE);
+
   const handleCreate = (data: {
     title: string;
     description: string;
@@ -143,63 +149,233 @@ export function TaskList() {
       )}
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {tasks?.map((task) => (
-          <div
-            key={task.id}
-            className="bg-white rounded-lg border border-gray-200 shadow-sm"
-          >
-            <div className="p-6 border-b border-gray-200">
-              <div className="flex items-start justify-between gap-2">
-                <h3 className="text-lg font-semibold text-gray-900 leading-tight">
-                  {task.title}
-                </h3>
-                <span
-                  className={`px-2 py-1 rounded text-xs font-medium whitespace-nowrap ${
-                    statusColors[task.status]
-                  }`}
-                >
-                  {statusLabels[task.status]}
-                </span>
-              </div>
-            </div>
-            <div className="p-6 space-y-3">
-              {task.description && (
-                <p className="text-sm text-gray-600 line-clamp-2">
-                  {task.description}
-                </p>
-              )}
-              <div className="flex items-center gap-2 flex-wrap">
-                <span
-                  className={`px-2 py-1 rounded text-xs font-medium border ${
-                    priorityColors[task.priority]
-                  }`}
-                >
-                  {task.priority}
-                </span>
-                <span className="text-xs text-gray-500">
-                  Assigned to: {task.user.name || task.user.email}
-                </span>
-              </div>
-              <p className="text-xs text-gray-500">
-                Created: {new Date(task.createdAt).toLocaleDateString()}
-              </p>
-              <div className="flex gap-2 pt-2">
-                <button
-                  onClick={() => openEditForm(task)}
-                  className="px-3 py-1.5 text-sm bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => setTaskToDelete(task)}
-                  className="px-3 py-1.5 text-sm bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
+        {/* ==================Todo Tasks=================== */}
+        <div className="p-2 border-2 border-purple-300 bg-orange-50 rounded-lg">
+          <div className="py-4 bg-purple-300 text-center mb-4 rounded-lg">
+            <p className="text-gray-900 font-semibold text-xl">To Do Task</p>
           </div>
-        ))}
+          <div className="grid grid-cols-1">
+            {todoTasks?.map((task) => (
+              <div
+                key={task.id}
+                className="bg-white rounded-lg border border-gray-200 shadow-sm mb-4"
+              >
+                <div className="p-6 border-b border-gray-300">
+                  <div className="flex items-start justify-between gap-2">
+                    <h3 className="text-lg font-semibold text-gray-900 leading-tight">
+                      {task.title}
+                    </h3>
+                    <div className="flex gap-2">
+                      <span
+                        className={`px-2 py-1 rounded text-xs font-medium border ${
+                          priorityColors[task.priority]
+                        }`}
+                      >
+                        {task.priority}
+                      </span>
+                      <span
+                        className={`px-2 py-1 rounded text-xs font-medium whitespace-nowrap ${
+                          statusColors[task.status]
+                        }`}
+                      >
+                        {statusLabels[task.status]}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div className="p-6 space-y-3">
+                  {task.description && (
+                    <p className="text-sm text-gray-600 line-clamp-2">
+                      {task.description}
+                    </p>
+                  )}
+                  <div className="items-center">
+                    <span className="text-xs text-gray-500">
+                      Assigned to: {task.user.name || task.user.email}
+                    </span>
+                  </div>
+                  <p className="text-xs text-gray-500">
+                    Created: {new Date(task.createdAt).toLocaleDateString()}
+                  </p>
+                  <div className="flex gap-2 pt-2">
+                    <button
+                      onClick={() => openEditForm(task)}
+                      className="px-3 py-1.5 text-sm bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => setTaskToDelete(task)}
+                      className="px-3 py-1.5 text-sm bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+            {todoTasks?.length === 0 && (
+              <div className="bg-white rounded-lg border border-gray-200 shadow-sm py-16 px-8">
+                <p className="text-center text-gray-600">
+                  No To Do tasks found. Assign a task!
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* ==================In Progress Tasks============== */}
+        <div className="p-2 border-2 border-purple-300 bg-green-50 rounded-lg">
+          <div className="py-4 bg-purple-300 text-center mb-4 rounded-lg">
+            <p className="text-gray-900 font-semibold text-xl">
+              In Progress Task
+            </p>
+          </div>
+          <div className="grid grid-cols-1">
+            {inProgressTasks?.map((task) => (
+              <div
+                key={task.id}
+                className="bg-white rounded-lg border border-gray-200 shadow-sm mb-4"
+              >
+                <div className="p-6 border-b border-gray-300">
+                  <div className="flex items-start justify-between gap-2">
+                    <h3 className="text-lg font-semibold text-gray-900 leading-tight">
+                      {task.title}
+                    </h3>
+                    <div className="flex gap-2">
+                      <span
+                        className={`px-2 py-1 rounded text-xs font-medium border ${
+                          priorityColors[task.priority]
+                        }`}
+                      >
+                        {task.priority}
+                      </span>
+                      <span
+                        className={`px-2 py-1 rounded text-xs font-medium whitespace-nowrap ${
+                          statusColors[task.status]
+                        }`}
+                      >
+                        {statusLabels[task.status]}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div className="p-6 space-y-3">
+                  {task.description && (
+                    <p className="text-sm text-gray-600 line-clamp-2">
+                      {task.description}
+                    </p>
+                  )}
+                  <div className="items-center">
+                    <span className="text-xs text-gray-500">
+                      Assigned to: {task.user.name || task.user.email}
+                    </span>
+                  </div>
+                  <p className="text-xs text-gray-500">
+                    Created: {new Date(task.createdAt).toLocaleDateString()}
+                  </p>
+                  <div className="flex gap-2 pt-2">
+                    <button
+                      onClick={() => openEditForm(task)}
+                      className="px-3 py-1.5 text-sm bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => setTaskToDelete(task)}
+                      className="px-3 py-1.5 text-sm bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            {inProgressTasks?.length === 0 && (
+              <div className="bg-white rounded-lg border border-gray-200 shadow-sm py-16 px-8">
+                <p className="text-center text-gray-600">
+                  No In Progress tasks found. Assign a task!
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+        {/* ==================Done Tasks=================== */}
+        <div className="p-2 border-2 border-purple-300 bg-green-100 rounded-lg">
+          <div className="py-4 bg-purple-300 text-center mb-4 rounded-lg">
+            <p className="text-gray-900 font-semibold text-xl">Done Task</p>
+          </div>
+          <div className="grid grid-cols-1">
+            {doneTasks?.map((task) => (
+              <div
+                key={task.id}
+                className="bg-white rounded-lg border border-gray-200 shadow-sm mb-4"
+              >
+                <div className="p-6 border-b border-gray-300">
+                  <div className="flex items-start justify-between gap-2">
+                    <h3 className="text-lg font-semibold text-gray-900 leading-tight">
+                      {task.title}
+                    </h3>
+                    <div className="flex gap-2">
+                      <span
+                        className={`px-2 py-1 rounded text-xs font-medium border ${
+                          priorityColors[task.priority]
+                        }`}
+                      >
+                        {task.priority}
+                      </span>
+                      <span
+                        className={`px-2 py-1 rounded text-xs font-medium whitespace-nowrap ${
+                          statusColors[task.status]
+                        }`}
+                      >
+                        {statusLabels[task.status]}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div className="p-6 space-y-3">
+                  {task.description && (
+                    <p className="text-sm text-gray-600 line-clamp-2">
+                      {task.description}
+                    </p>
+                  )}
+                  <div className="items-center">
+                    <span className="text-xs text-gray-500">
+                      Assigned to: {task.user.name || task.user.email}
+                    </span>
+                  </div>
+                  <p className="text-xs text-gray-500">
+                    Created: {new Date(task.createdAt).toLocaleDateString()}
+                  </p>
+                  <div className="flex gap-2 pt-2">
+                    <button
+                      onClick={() => openEditForm(task)}
+                      className="px-3 py-1.5 text-sm bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => setTaskToDelete(task)}
+                      className="px-3 py-1.5 text-sm bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            {doneTasks?.length === 0 && (
+              <div className="bg-white rounded-lg border border-gray-200 shadow-sm pt-16 px-8">
+                <p className="text-center text-gray-600">
+                  No Completed tasks found. Assign a task!
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
       {tasks?.length === 0 && (
@@ -211,7 +387,7 @@ export function TaskList() {
       )}
 
       {taskToDelete && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
             <div className="p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">

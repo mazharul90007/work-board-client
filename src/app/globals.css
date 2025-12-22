@@ -3,11 +3,15 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --brand: #4c3575;
+  --active: #e05170;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-brand: var(--brand);
+  --color-active: var(--active);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }

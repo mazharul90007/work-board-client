@@ -12,6 +12,7 @@ import {
 import { TaskStatus, Priority } from "@/src/lib/api-client";
 import Link from "next/link";
 import { StatsCard } from "./stats-card";
+import { useThemeStore } from "../stores/theme-store";
 
 const statusColors = {
   [TaskStatus.TODO]: "bg-slate-500 text-white",
@@ -28,6 +29,7 @@ const priorityColors = {
 export function Dashboard() {
   const { data: tasks, isLoading: tasksLoading } = useTasks();
   const { data: users, isLoading: usersLoading } = useUsers();
+  const theme = useThemeStore((s) => s.theme);
 
   if (tasksLoading || usersLoading) {
     return (
@@ -51,8 +53,16 @@ export function Dashboard() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Dashboard</h1>
-        <p className="text-gray-600">Overview of your work board</p>
+        <h1
+          className={`text-3xl font-bold text-gray-900 mb-2 ${
+            theme === "dark" && "text-white"
+          }`}
+        >
+          Dashboard
+        </h1>
+        <p className={`text-gray-600 ${theme === "dark" && "text-white"}`}>
+          Overview of your work board
+        </p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">

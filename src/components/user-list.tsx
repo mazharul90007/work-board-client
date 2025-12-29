@@ -9,8 +9,11 @@ import {
 } from "@/src/hooks/use-users";
 import { UserForm } from "./user-form";
 import type { User } from "@/src/lib/api-client";
+import { useThemeStore } from "../stores/theme-store";
+import { IoMdAdd } from "react-icons/io";
 
 export function UserList() {
+  const theme = useThemeStore((s) => s.theme);
   const { data: users, isLoading } = useUsers();
   const createUser = useCreateUser();
   const updateUser = useUpdateUser();
@@ -80,24 +83,18 @@ export function UserList() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-3xl font-bold text-gray-900">Users</h2>
+        <h2
+          className={`text-3xl font-bold text-gray-900 ${
+            theme === "dark" && "text-white"
+          }`}
+        >
+          Users
+        </h2>
         <button
           onClick={openCreateForm}
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 flex items-center gap-2"
+          className="px-4 py-2 bg-main text-white rounded-md hover:bg-main-dark focus:outline-none focus:ring-2 focus:ring-main-dark focus:ring-offset-2 flex items-center gap-2 cursor-pointer"
         >
-          <svg
-            className="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 4v16m8-8H4"
-            />
-          </svg>
+          <IoMdAdd />
           Add User
         </button>
       </div>
@@ -131,13 +128,13 @@ export function UserList() {
               <div className="flex gap-2 pt-2">
                 <button
                   onClick={() => openEditForm(user)}
-                  className="px-3 py-1.5 text-sm bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="px-3 py-1.5 text-sm bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
                 >
                   Edit
                 </button>
                 <button
                   onClick={() => setUserToDelete(user)}
-                  className="px-3 py-1.5 text-sm bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+                  className="px-3 py-1.5 text-sm bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 cursor-pointer"
                 >
                   Delete
                 </button>

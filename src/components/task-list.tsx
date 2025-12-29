@@ -9,6 +9,7 @@ import {
 } from "@/src/hooks/use-tasks";
 import { TaskForm } from "./task-form";
 import { TaskStatus, Priority, type Task } from "@/src/lib/api-client";
+import { useThemeStore } from "../stores/theme-store";
 
 const statusColors = {
   [TaskStatus.TODO]: "bg-slate-500 text-white",
@@ -29,6 +30,7 @@ const statusLabels = {
 };
 
 export function TaskList() {
+  const theme = useThemeStore((s) => s.theme);
   const { data: tasks, isLoading } = useTasks();
   const createTask = useCreateTask();
   const updateTask = useUpdateTask();
@@ -116,7 +118,13 @@ export function TaskList() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-3xl font-bold text-gray-900 font-bold">Tasks</h2>
+        <h2
+          className={`text-3xl font-bold text-gray-900 ${
+            theme === "dark" && "text-white"
+          }`}
+        >
+          Tasks
+        </h2>
         <button
           onClick={openCreateForm}
           className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 flex items-center gap-2"

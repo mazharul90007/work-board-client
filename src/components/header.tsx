@@ -14,7 +14,7 @@ export function Header() {
   ];
 
   return (
-    <header className="border-b border-gray-200 bg-brand">
+    <header className="border-b border-gray-200 bg-main">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between text-white">
           <Link href="/" className="flex items-center gap-2 font-bold text-xl">

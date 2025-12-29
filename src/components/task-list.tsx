@@ -10,6 +10,7 @@ import {
 import { TaskForm } from "./task-form";
 import { TaskStatus, Priority, type Task } from "@/src/lib/api-client";
 import { useThemeStore } from "../stores/theme-store";
+import { IoMdAdd } from "react-icons/io";
 
 const statusColors = {
   [TaskStatus.TODO]: "bg-slate-500 text-white",
@@ -127,21 +128,9 @@ export function TaskList() {
         </h2>
         <button
           onClick={openCreateForm}
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 flex items-center gap-2"
+          className="px-4 py-2 bg-main text-white rounded-md hover:bg-main-dark focus:outline-none focus:ring-2 focus:ring-main-dark focus:ring-offset-2 flex items-center gap-2"
         >
-          <svg
-            className="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 4v16m8-8H4"
-            />
-          </svg>
+          <IoMdAdd />
           Add Task
         </button>
       </div>
@@ -208,13 +197,13 @@ export function TaskList() {
                   <div className="flex gap-2 pt-2">
                     <button
                       onClick={() => openEditForm(task)}
-                      className="px-3 py-1.5 text-sm bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="px-3 py-1.5 text-sm bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-main-dark cursor-pointer"
                     >
                       Edit
                     </button>
                     <button
                       onClick={() => setTaskToDelete(task)}
-                      className="px-3 py-1.5 text-sm bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+                      className="px-3 py-1.5 text-sm bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 cursor-pointer"
                     >
                       Delete
                     </button>
@@ -285,13 +274,13 @@ export function TaskList() {
                   <div className="flex gap-2 pt-2">
                     <button
                       onClick={() => openEditForm(task)}
-                      className="px-3 py-1.5 text-sm bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="px-3 py-1.5 text-sm bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-main-dark cursor-pointer"
                     >
                       Edit
                     </button>
                     <button
                       onClick={() => setTaskToDelete(task)}
-                      className="px-3 py-1.5 text-sm bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+                      className="px-3 py-1.5 text-sm bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 cursor-pointer"
                     >
                       Delete
                     </button>
@@ -360,13 +349,13 @@ export function TaskList() {
                   <div className="flex gap-2 pt-2">
                     <button
                       onClick={() => openEditForm(task)}
-                      className="px-3 py-1.5 text-sm bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="px-3 py-1.5 text-sm bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-main-dark cursor-pointer"
                     >
                       Edit
                     </button>
                     <button
                       onClick={() => setTaskToDelete(task)}
-                      className="px-3 py-1.5 text-sm bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+                      className="px-3 py-1.5 text-sm bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 cursor-pointer"
                     >
                       Delete
                     </button>
@@ -409,13 +398,13 @@ export function TaskList() {
             <div className="p-6 pt-0 flex gap-2 justify-end">
               <button
                 onClick={() => setTaskToDelete(null)}
-                className="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-main-dark cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDelete}
-                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 cursor-pointer"
               >
                 Delete
               </button>

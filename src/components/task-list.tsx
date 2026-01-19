@@ -1,417 +1,220 @@
 "use client";
-
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
+import { Task, UpdateTaskInput } from "../interfaces/task.interface";
 import {
-  useTasks,
-  useCreateTask,
-  useUpdateTask,
-  useDeleteTask,
-} from "@/src/hooks/use-tasks";
-import { TaskForm } from "./task-form";
-import { TaskStatus, Priority, type Task } from "@/src/lib/api-client";
-import { useThemeStore } from "../stores/theme-store";
-import { IoMdAdd } from "react-icons/io";
+  Calendar,
+  Clock,
+  Pencil,
+  Trash2,
+  MoreHorizontal,
+  CheckCircle2,
+  RefreshCcw,
+} from "lucide-react";
 
-const statusColors = {
-  [TaskStatus.TODO]: "bg-slate-500 text-white",
-  [TaskStatus.IN_PROGRESS]: "bg-blue-500 text-white",
-  [TaskStatus.DONE]: "bg-green-500 text-white",
-};
+export default function TaskList({
+  tasks,
+  onEdit,
+}: {
+  tasks: Task[];
+  onEdit: (task: Task) => void;
+}) {
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
-const priorityColors = {
-  [Priority.LOW]: "bg-gray-100 text-gray-800 border-gray-300",
-  [Priority.MEDIUM]: "bg-yellow-100 text-yellow-800 border-yellow-300",
-  [Priority.HIGH]: "bg-red-100 text-red-800 border-red-300",
-};
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setOpenMenuId(null);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
-const statusLabels = {
-  [TaskStatus.TODO]: "To Do",
-  [TaskStatus.IN_PROGRESS]: "In Progress",
-  [TaskStatus.DONE]: "Done",
-};
-
-export function TaskList() {
-  const theme = useThemeStore((s) => s.theme);
-  const { data: tasks, isLoading } = useTasks();
-  const createTask = useCreateTask();
-  const updateTask = useUpdateTask();
-  const deleteTask = useDeleteTask();
-
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [editingTask, setEditingTask] = useState<Task | null>(null);
-  const [taskToDelete, setTaskToDelete] = useState<Task | null>(null);
-
-  const todoTasks = tasks?.filter((t) => t.status === TaskStatus.TODO);
-  const inProgressTasks = tasks?.filter(
-    (t) => t.status === TaskStatus.IN_PROGRESS
-  );
-  const doneTasks = tasks?.filter((t) => t.status === TaskStatus.DONE);
-
-  const handleCreate = (data: {
-    title: string;
-    description: string;
-    status: TaskStatus;
-    priority: Priority;
-    userId: string;
-  }) => {
-    createTask.mutate(data, {
-      onSuccess: () => {
-        setIsFormOpen(false);
-      },
-    });
-  };
-
-  const handleUpdate = (data: {
-    title: string;
-    description: string;
-    status: TaskStatus;
-    priority: Priority;
-    userId: string;
-  }) => {
-    if (editingTask) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { userId, ...updateData } = data;
-      updateTask.mutate(
-        { id: editingTask.id, input: updateData },
-        {
-          onSuccess: () => {
-            setEditingTask(null);
-            setIsFormOpen(false);
-          },
-        }
-      );
-    }
-  };
-
-  const handleDelete = () => {
-    if (taskToDelete) {
-      deleteTask.mutate(taskToDelete.id, {
-        onSuccess: () => {
-          setTaskToDelete(null);
-        },
-      });
-    }
-  };
-
-  const openCreateForm = () => {
-    setEditingTask(null);
-    setIsFormOpen(true);
-  };
-
-  const openEditForm = (task: Task) => {
-    setEditingTask(task);
-    setIsFormOpen(true);
-  };
-
-  const closeForm = () => {
-    setIsFormOpen(false);
-    setEditingTask(null);
-  };
-
-  if (isLoading) {
+  if (tasks.length === 0) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
+      <div className="flex flex-col items-center justify-center py-24 bg-white rounded-2xl border border-dashed border-slate-200">
+        <div className="bg-slate-50 p-4 rounded-full mb-4">
+          <Clock className="w-8 h-8 text-slate-300" />
+        </div>
+        <p className="text-slate-600 font-semibold text-lg">
+          No tasks in sight
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h2
-          className={`text-3xl font-bold text-gray-900 ${
-            theme === "dark" && "text-white"
-          }`}
-        >
-          Tasks
-        </h2>
-        <button
-          onClick={openCreateForm}
-          className="px-4 py-2 bg-main text-white rounded-md hover:bg-main-dark focus:outline-none focus:ring-2 focus:ring-main-dark focus:ring-offset-2 flex items-center gap-2"
-        >
-          <IoMdAdd />
-          Add Task
-        </button>
-      </div>
+    <div className="space-y-3">
+      {tasks.map((task) => {
+        const assignedByName = task.assignedBy?.name ?? "User";
+        const assignedToName = task.assignedTo?.name ?? "Unassigned";
+        const isOverdue =
+          task.dueDate &&
+          new Date(task.dueDate) < new Date() &&
+          task.status !== "DONE";
+        const formattedDate = task.dueDate
+          ? new Date(task.dueDate).toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+            })
+          : "No date";
 
-      {isFormOpen && (
-        <TaskForm
-          key={editingTask?.id ?? "create"}
-          task={editingTask || undefined}
-          onSubmit={editingTask ? handleUpdate : handleCreate}
-          onCancel={closeForm}
-          isLoading={createTask.isPending || updateTask.isPending}
-        />
-      )}
-
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {/* ==================Todo Tasks=================== */}
-        <div className="p-2 border-2 border-purple-300 bg-orange-50 rounded-lg">
-          <div className="py-4 bg-purple-300 text-center mb-4 rounded-lg">
-            <p className="text-gray-900 font-semibold text-xl">To Do Task</p>
-          </div>
-          <div className="grid grid-cols-1">
-            {todoTasks?.map((task) => (
-              <div
-                key={task.id}
-                className="bg-white rounded-lg border border-gray-200 shadow-sm mb-4"
-              >
-                <div className="p-6 border-b border-gray-300">
-                  <div className="flex items-start justify-between gap-2">
-                    <h3 className="text-lg font-semibold text-gray-900 leading-tight">
-                      {task.title}
-                    </h3>
-                    <div className="flex gap-2">
-                      <span
-                        className={`px-2 py-1 rounded text-xs font-medium border ${
-                          priorityColors[task.priority]
-                        }`}
-                      >
-                        {task.priority}
-                      </span>
-                      <span
-                        className={`px-2 py-1 rounded text-xs font-medium whitespace-nowrap ${
-                          statusColors[task.status]
-                        }`}
-                      >
-                        {statusLabels[task.status]}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="p-6 space-y-3">
-                  {task.description && (
-                    <p className="text-sm text-gray-600 line-clamp-2">
-                      {task.description}
-                    </p>
-                  )}
-                  <div className="items-center">
-                    <span className="text-xs text-gray-500">
-                      Assigned to: {task.user.name || task.user.email}
-                    </span>
-                  </div>
-                  <p className="text-xs text-gray-500">
-                    Created: {new Date(task.createdAt).toLocaleDateString()}
-                  </p>
-                  <div className="flex gap-2 pt-2">
-                    <button
-                      onClick={() => openEditForm(task)}
-                      className="px-3 py-1.5 text-sm bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-main-dark cursor-pointer"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => setTaskToDelete(task)}
-                      className="px-3 py-1.5 text-sm bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 cursor-pointer"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-            {todoTasks?.length === 0 && (
-              <div className="bg-white rounded-lg border border-gray-200 shadow-sm py-16 px-8">
-                <p className="text-center text-gray-600">
-                  No To Do tasks found. Assign a task!
+        return (
+          <div
+            key={task.id}
+            className="group flex items-center justify-between p-4 bg-white rounded-xl border border-slate-200 hover:border-purple-200 hover:shadow-sm transition-all duration-200"
+          >
+            {/* --- LEFT SECTION: Title & Description --- */}
+            <div className="flex items-center gap-4 flex-1 min-w-0">
+              <span
+                className={`h-2.5 w-2.5 rounded-full shrink-0 ${
+                  task.priority === "HIGH"
+                    ? "bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.3)]"
+                    : task.priority === "MEDIUM"
+                      ? "bg-yellow-500"
+                      : "bg-green-500"
+                }`}
+              />
+              <div className="min-w-0">
+                <h3
+                  className={`font-bold text-slate-800 truncate text-sm md:text-base ${task.status === "DONE" ? "line-through text-slate-400" : ""}`}
+                >
+                  {task.title}
+                </h3>
+                <p className="text-xs text-slate-500 line-clamp-1 truncate mt-0.5">
+                  {task.description ?? "No description"}
                 </p>
               </div>
-            )}
-          </div>
-        </div>
-
-        {/* ==================In Progress Tasks============== */}
-        <div className="p-2 border-2 border-purple-300 bg-green-50 rounded-lg">
-          <div className="py-4 bg-purple-300 text-center mb-4 rounded-lg">
-            <p className="text-gray-900 font-semibold text-xl">
-              In Progress Task
-            </p>
-          </div>
-          <div className="grid grid-cols-1">
-            {inProgressTasks?.map((task) => (
-              <div
-                key={task.id}
-                className="bg-white rounded-lg border border-gray-200 shadow-sm mb-4"
-              >
-                <div className="p-6 border-b border-gray-300">
-                  <div className="flex items-start justify-between gap-2">
-                    <h3 className="text-lg font-semibold text-gray-900 leading-tight">
-                      {task.title}
-                    </h3>
-                    <div className="flex gap-2">
-                      <span
-                        className={`px-2 py-1 rounded text-xs font-medium border ${
-                          priorityColors[task.priority]
-                        }`}
-                      >
-                        {task.priority}
-                      </span>
-                      <span
-                        className={`px-2 py-1 rounded text-xs font-medium whitespace-nowrap ${
-                          statusColors[task.status]
-                        }`}
-                      >
-                        {statusLabels[task.status]}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="p-6 space-y-3">
-                  {task.description && (
-                    <p className="text-sm text-gray-600 line-clamp-2">
-                      {task.description}
-                    </p>
-                  )}
-                  <div className="items-center">
-                    <span className="text-xs text-gray-500">
-                      Assigned to: {task.user.name || task.user.email}
-                    </span>
-                  </div>
-                  <p className="text-xs text-gray-500">
-                    Created: {new Date(task.createdAt).toLocaleDateString()}
-                  </p>
-                  <div className="flex gap-2 pt-2">
-                    <button
-                      onClick={() => openEditForm(task)}
-                      className="px-3 py-1.5 text-sm bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-main-dark cursor-pointer"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => setTaskToDelete(task)}
-                      className="px-3 py-1.5 text-sm bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 cursor-pointer"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-
-            {inProgressTasks?.length === 0 && (
-              <div className="bg-white rounded-lg border border-gray-200 shadow-sm py-16 px-8">
-                <p className="text-center text-gray-600">
-                  No In Progress tasks found. Assign a task!
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
-        {/* ==================Done Tasks=================== */}
-        <div className="p-2 border-2 border-purple-300 bg-green-100 rounded-lg">
-          <div className="py-4 bg-purple-300 text-center mb-4 rounded-lg">
-            <p className="text-gray-900 font-semibold text-xl">Done Task</p>
-          </div>
-          <div className="grid grid-cols-1">
-            {doneTasks?.map((task) => (
-              <div
-                key={task.id}
-                className="bg-white rounded-lg border border-gray-200 shadow-sm mb-4"
-              >
-                <div className="p-6 border-b border-gray-300">
-                  <div className="flex items-start justify-between gap-2">
-                    <h3 className="text-lg font-semibold text-gray-900 leading-tight">
-                      {task.title}
-                    </h3>
-                    <div className="flex gap-2">
-                      <span
-                        className={`px-2 py-1 rounded text-xs font-medium border ${
-                          priorityColors[task.priority]
-                        }`}
-                      >
-                        {task.priority}
-                      </span>
-                      <span
-                        className={`px-2 py-1 rounded text-xs font-medium whitespace-nowrap ${
-                          statusColors[task.status]
-                        }`}
-                      >
-                        {statusLabels[task.status]}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="p-6 space-y-3">
-                  {task.description && (
-                    <p className="text-sm text-gray-600 line-clamp-2">
-                      {task.description}
-                    </p>
-                  )}
-                  <div className="items-center">
-                    <span className="text-xs text-gray-500">
-                      Assigned to: {task.user.name || task.user.email}
-                    </span>
-                  </div>
-                  <p className="text-xs text-gray-500">
-                    Created: {new Date(task.createdAt).toLocaleDateString()}
-                  </p>
-                  <div className="flex gap-2 pt-2">
-                    <button
-                      onClick={() => openEditForm(task)}
-                      className="px-3 py-1.5 text-sm bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-main-dark cursor-pointer"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => setTaskToDelete(task)}
-                      className="px-3 py-1.5 text-sm bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 cursor-pointer"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-
-            {doneTasks?.length === 0 && (
-              <div className="bg-white rounded-lg border border-gray-200 shadow-sm pt-16 px-8">
-                <p className="text-center text-gray-600">
-                  No Completed tasks found. Assign a task!
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {tasks?.length === 0 && (
-        <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-8">
-          <p className="text-center text-gray-600">
-            No tasks found. Create your first task!
-          </p>
-        </div>
-      )}
-
-      {taskToDelete && (
-        <div className="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
-            <div className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Are you sure?
-              </h3>
-              <p className="text-sm text-gray-600">
-                This will permanently delete the task &quot;
-                {taskToDelete?.title}&quot; and cannot be undone.
-              </p>
             </div>
-            <div className="p-6 pt-0 flex gap-2 justify-end">
-              <button
-                onClick={() => setTaskToDelete(null)}
-                className="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-main-dark cursor-pointer"
+
+            {/* --- RIGHT SECTION: Metadata & Dropdown --- */}
+            <div className="flex items-center gap-4 md:gap-6">
+              {/* Date (Desktop) */}
+              <div
+                className={`hidden lg:flex items-center gap-1.5 text-xs font-medium ${isOverdue ? "text-red-500" : "text-slate-400"}`}
               >
-                Cancel
-              </button>
-              <button
-                onClick={handleDelete}
-                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 cursor-pointer"
+                <Calendar size={14} />
+                <span>{formattedDate}</span>
+              </div>
+
+              {/* Status Badge (Your original section) */}
+              <div className="hidden md:block">
+                <span
+                  className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border ${
+                    task.status === "DONE"
+                      ? "bg-emerald-50 text-emerald-600 border-emerald-100"
+                      : task.status === "IN_PROGRESS"
+                        ? "bg-blue-50 text-blue-600 border-blue-100"
+                        : "bg-slate-50 text-slate-500 border-slate-100"
+                  }`}
+                >
+                  {task.status.replace("_", " ")}
+                </span>
+              </div>
+
+              {/* Avatars (Your original section) */}
+              <div className="flex items-center -space-x-2">
+                <div
+                  title={`By: ${assignedByName}`}
+                  className="w-8 h-8 rounded-full border-2 border-white bg-slate-100 overflow-hidden relative shadow-sm"
+                >
+                  {task.assignedBy?.profilePhoto ? (
+                    <Image
+                      src={task.assignedBy.profilePhoto}
+                      alt={assignedByName}
+                      fill
+                      className="object-cover"
+                      sizes="32px"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-[10px] bg-slate-200 text-slate-600 font-bold">
+                      {assignedByName.charAt(0)}
+                    </div>
+                  )}
+                </div>
+                <div
+                  title={`To: ${assignedToName}`}
+                  className="w-8 h-8 rounded-full border-2 border-white bg-purple-100 overflow-hidden relative z-10 shadow-sm"
+                >
+                  {task.assignedTo?.profilePhoto ? (
+                    <Image
+                      src={task.assignedTo.profilePhoto}
+                      alt={assignedToName}
+                      fill
+                      className="object-cover"
+                      sizes="32px"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-[10px] bg-purple-200 text-purple-600 font-bold">
+                      {assignedToName.charAt(0)}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Action Dropdown */}
+              <div
+                className="relative border-l border-slate-100 pl-4"
+                ref={openMenuId === task.id ? menuRef : null}
               >
-                Delete
-              </button>
+                <button
+                  onClick={() =>
+                    setOpenMenuId(openMenuId === task.id ? null : task.id)
+                  }
+                  className="p-2 hover:bg-slate-100 text-slate-400 hover:text-slate-600 rounded-lg transition-colors"
+                >
+                  <MoreHorizontal size={18} />
+                </button>
+
+                {openMenuId === task.id && (
+                  <div className="absolute right-0 mt-2 w-52 bg-white border border-slate-200 rounded-xl shadow-xl z-[100] overflow-hidden animate-in fade-in zoom-in duration-100 p-2">
+                    {/* ================Status Part============== */}
+                    <div className="">
+                      <div className="px-4 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 bg-purple-100 rounded">
+                        Task Status
+                      </div>
+                      <button className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 transition-colors cursor-pointer">
+                        <CheckCircle2 size={16} className="text-emerald-500" />
+                        Mark as Done
+                      </button>
+                      <button className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 transition-colors cursor-pointer">
+                        <RefreshCcw size={16} className="text-blue-500" />
+                        In Progress
+                      </button>
+                    </div>
+
+                    {/* ==============Manage Part============ */}
+                    <div className="mt-1">
+                      <div className="px-4 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 bg-purple-100 rounded">
+                        Manage
+                      </div>
+                      <button
+                        onClick={() => {
+                          onEdit(task);
+                          setOpenMenuId(null);
+                        }}
+                        className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 transition-colors cursor-pointer"
+                      >
+                        <Pencil size={16} className="text-slate-400" />
+                        Edit Details
+                      </button>
+                      <button
+                        onClick={() => console.log("Delete", task.id)}
+                        className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+                      >
+                        <Trash2 size={16} className="text-red-400" />
+                        Delete Task
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        );
+      })}
     </div>
   );
 }

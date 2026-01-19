@@ -1,25 +1,32 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-toastify";
 import {
-  tasksApi,
-  type CreateTaskInput,
-  type UpdateTaskInput,
-} from "@/src/lib/api-client";
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+import { tasksApi } from "../lib/api-client";
+import {
+  CreateTaskInput,
+  Pagination,
+  Task,
+  TaskQueryParams,
+  UpdateTaskInput,
+} from "../interfaces/task.interface";
+import { toast } from "react-toastify";
 
 // ================Get all tasks============
-export function useTasks() {
-  return useQuery({
-    queryKey: ["tasks"],
-    queryFn: tasksApi.getAll,
-  });
+interface UseTaskResult {
+  data: Task[];
+  meta: Pagination;
 }
 
-// =================Get single task by ID===============
-export function useTask(id: string | null) {
-  return useQuery({
-    queryKey: ["task", id],
-    queryFn: () => tasksApi.getById(id!),
-    enabled: !!id,
+export function useTasks(params?: TaskQueryParams) {
+  return useQuery<UseTaskResult>({
+    queryKey: ["tasks", params],
+    queryFn: () => tasksApi.getAll(params),
+    staleTime: 1000 * 60 * 1,
+    refetchOnWindowFocus: false,
+    placeholderData: keepPreviousData,
   });
 }
 
@@ -28,16 +35,26 @@ export function useCreateTask() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (input: CreateTaskInput) => tasksApi.create(input),
+    mutationFn: (input: CreateTaskInput) => tasksApi.createTask(input),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
       toast.success("Task created successfully!");
     },
     onError: (error: Error) => {
-      toast.error(`Failed to create task: ${error.message}`);
+      const errorMessage = error.message || "Something went wrong";
+      toast.error(`Failed: ${errorMessage}`);
     },
   });
 }
+
+// // =================Get single task by ID===============
+// export function useTask(id: string | null) {
+//   return useQuery({
+//     queryKey: ["task", id],
+//     queryFn: () => tasksApi.getById(id!),
+//     enabled: !!id,
+//   });
+// }
 
 // ====================Update task==============
 export function useUpdateTask() {
@@ -45,10 +62,9 @@ export function useUpdateTask() {
 
   return useMutation({
     mutationFn: ({ id, input }: { id: string; input: UpdateTaskInput }) =>
-      tasksApi.update(id, input),
-    onSuccess: (data) => {
+      tasksApi.updateTask(id, input),
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
-      queryClient.invalidateQueries({ queryKey: ["task", data.id] });
       toast.success("Task updated successfully!");
     },
     onError: (error: Error) => {
@@ -57,18 +73,18 @@ export function useUpdateTask() {
   });
 }
 
-// =======================Delete task===============
-export function useDeleteTask() {
-  const queryClient = useQueryClient();
+// // =======================Delete task===============
+// export function useDeleteTask() {
+//   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: (id: string) => tasksApi.delete(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
-      toast.success("Task deleted successfully!");
-    },
-    onError: (error: Error) => {
-      toast.error(`Failed to delete task: ${error.message}`);
-    },
-  });
-}
+//   return useMutation({
+//     mutationFn: (id: string) => tasksApi.delete(id),
+//     onSuccess: () => {
+//       queryClient.invalidateQueries({ queryKey: ["tasks"] });
+//       toast.success("Task deleted successfully!");
+//     },
+//     onError: (error: Error) => {
+//       toast.error(`Failed to delete task: ${error.message}`);
+//     },
+//   });
+// }

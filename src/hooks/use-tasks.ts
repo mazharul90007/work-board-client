@@ -73,18 +73,19 @@ export function useUpdateTask() {
   });
 }
 
-// // =======================Delete task===============
-// export function useDeleteTask() {
-//   const queryClient = useQueryClient();
+// =======================Delete task===============
+export const useDeleteTask = () => {
+  const queryClient = useQueryClient();
 
-//   return useMutation({
-//     mutationFn: (id: string) => tasksApi.delete(id),
-//     onSuccess: () => {
-//       queryClient.invalidateQueries({ queryKey: ["tasks"] });
-//       toast.success("Task deleted successfully!");
-//     },
-//     onError: (error: Error) => {
-//       toast.error(`Failed to delete task: ${error.message}`);
-//     },
-//   });
-// }
+  return useMutation({
+    mutationFn: (id: string) => tasksApi.deleteTask(id),
+    onSuccess: (response) => {
+      // Refresh the tasks list automatically
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      toast.success(response.message || "Task deleted successfully");
+    },
+    onError: (error: Error) => {
+      toast.error(`Failed to delete task: ${error.message}`);
+    },
+  });
+};

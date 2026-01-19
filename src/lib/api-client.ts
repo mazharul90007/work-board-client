@@ -70,4 +70,8 @@ export const tasksApi = {
     const response = await api.patch(`/task/${id}`, data);
     return response.data;
   },
+  deleteTask: async (id: string) => {
+    const response = await api.delete(`/task/delete/${id}`);
+    return response.data;
+  },
 };

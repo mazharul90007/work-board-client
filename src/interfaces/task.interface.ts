@@ -63,6 +63,7 @@ export interface UpdateTaskInput {
   title?: string | null;
   description?: string | null;
   priority?: Priority | null;
-  assignedToId: string;
+  status?: TaskStatus | null;
+  assignedToId?: string | null;
   dueDate?: string | null;
 }

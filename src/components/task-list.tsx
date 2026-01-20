@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Swal from "sweetalert2"; // 1. Import SweetAlert2
-import { Task } from "../interfaces/task.interface";
+import { Task, TaskStatus } from "../interfaces/task.interface";
 import {
   Calendar,
   Clock,
@@ -11,8 +11,9 @@ import {
   MoreHorizontal,
   CheckCircle2,
   RefreshCcw,
+  ClipboardCheck,
 } from "lucide-react";
-import { useDeleteTask } from "../hooks/use-tasks";
+import { useDeleteTask, useUpdateTask } from "../hooks/use-tasks";
 
 export default function TaskList({
   tasks,
@@ -25,8 +26,9 @@ export default function TaskList({
   const menuRef = useRef<HTMLDivElement>(null);
 
   const { mutate: deleteTask, isPending: isDeleting } = useDeleteTask();
+  const { mutate: updateTask } = useUpdateTask();
 
-  // 2. Updated handleDelete with SweetAlert2
+  // handle Delete function
   const handleDelete = (id: string) => {
     setOpenMenuId(null); // Close the dropdown menu immediately
 
@@ -47,6 +49,41 @@ export default function TaskList({
     }).then((result) => {
       if (result.isConfirmed) {
         deleteTask(id);
+      }
+    });
+  };
+
+  //handle Update status function
+  const handleStatusUpdate = (task: Task, newStatus: TaskStatus) => {
+    setOpenMenuId(null);
+
+    const statusText =
+      newStatus === TaskStatus.DONE
+        ? "Mark as Done"
+        : newStatus === TaskStatus.IN_PROGRESS
+          ? "Set to In Progress"
+          : "Set to TODO";
+    Swal.fire({
+      title: statusText,
+      text: `Change status from ${task.status} to ${newStatus}?`,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#9333ea",
+      cancelButtonColor: "#64748b",
+      confirmButtonText: "Yes, update it!",
+      customClass: {
+        popup: "rounded-2xl",
+        confirmButton: "rounded-lg px-4 py-2 font-bold",
+        cancelButton: "rounded-lg px-4 py-2 font-bold",
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        updateTask({
+          id: task.id,
+          input: {
+            status: newStatus,
+          },
+        });
       }
     });
   };
@@ -217,21 +254,45 @@ export default function TaskList({
                   </button>
 
                   {openMenuId === task.id && (
-                    <div className="absolute right-0 mt-2 w-52 bg-white border border-slate-200 rounded-xl shadow-xl z-[100] overflow-hidden animate-in fade-in zoom-in duration-100 p-2">
+                    <div className="absolute right-0 mt-2 w-52 bg-white border border-slate-200 rounded-xl shadow-xl z-100 overflow-hidden animate-in fade-in zoom-in duration-100 p-2">
                       <div className="">
                         <div className="px-4 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 bg-purple-100 rounded">
                           Task Status
                         </div>
-                        <button className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 transition-colors cursor-pointer">
+                        {/* status ToDo button */}
+                        <button
+                          onClick={() =>
+                            handleStatusUpdate(task, TaskStatus.TODO)
+                          }
+                          className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 transition-colors cursor-pointer"
+                        >
+                          <ClipboardCheck size={16} className="text-gray-500" />
+                          Mark as ToDo
+                        </button>
+
+                        {/* status In progress button */}
+                        <button
+                          onClick={() =>
+                            handleStatusUpdate(task, TaskStatus.IN_PROGRESS)
+                          }
+                          className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 transition-colors cursor-pointer"
+                        >
+                          <RefreshCcw size={16} className="text-blue-500" />
+                          In Progress
+                        </button>
+
+                        {/* status Done button */}
+                        <button
+                          onClick={() =>
+                            handleStatusUpdate(task, TaskStatus.DONE)
+                          }
+                          className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 transition-colors cursor-pointer"
+                        >
                           <CheckCircle2
                             size={16}
                             className="text-emerald-500"
                           />
                           Mark as Done
-                        </button>
-                        <button className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 transition-colors cursor-pointer">
-                          <RefreshCcw size={16} className="text-blue-500" />
-                          In Progress
                         </button>
                       </div>
 

@@ -34,7 +34,8 @@ const RECENT_TASKS = [
 ];
 
 const AdminDashboard = () => {
-  const { data: users, isLoading, isError } = useGetUsers();
+  const { data: userData, isLoading, isError } = useGetUsers();
+  const users = userData?.data ?? [];
 
   if (isLoading)
     return (

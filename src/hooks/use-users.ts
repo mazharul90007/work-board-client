@@ -2,15 +2,20 @@
 
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { usersApi } from "../lib/api-client";
-import { User } from "../interfaces/user.interface";
+import { User, UserQueryParams } from "../interfaces/user.interface";
+import { Pagination } from "../interfaces/task.interface";
 
 // ============================Get all users================
-export function useGetUsers() {
-  return useQuery<User[]>({
-    queryKey: ["users"],
-    queryFn: async () => await usersApi.getAll(),
+export function useGetUsers(params?: UserQueryParams) {
+  interface UseUserResult {
+    data: User[];
+    meta: Pagination;
+  }
+  return useQuery<UseUserResult>({
+    queryKey: ["users", params],
+    queryFn: async () => await usersApi.getAll(params),
 
-    staleTime: 1000 * 60 * 5, // 5 minutes cache
+    staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
     placeholderData: keepPreviousData,
   });

@@ -8,7 +8,7 @@ import TaskList from "@/src/components/task-list";
 import TaskViewToggle from "@/src/components/taskViewToggle";
 import { TaskFilters } from "@/src/components/taskFilters";
 import { useAuthStore } from "@/src/stores/useAuthStore";
-import { RefreshCcw } from "lucide-react";
+import { PlusCircle, RefreshCcw } from "lucide-react";
 import { useGetUsers } from "@/src/hooks/use-users";
 import CreateTaskModal from "@/src/components/task/CreateTaskModal";
 import UpdateTaskModal from "@/src/components/task/UpdateTaskModal";
@@ -53,15 +53,17 @@ const TaskPage = () => {
     setView("all");
   };
 
-  const { data: usersData } = useGetUsers();
+  const { data: usersData, isLoading: userIsLoading } = useGetUsers();
   const { data, isLoading, isError, error } = useTasks(params);
 
+  if (userIsLoading) return <div>Loading users...</div>;
   if (isLoading) return <div>Loading tasks...</div>;
   if (isError)
     return <div>Error: {error instanceof Error ? error.message : "Error"}</div>;
 
   const tasks = data?.data ?? [];
   const meta = data?.meta;
+  const users = usersData?.data ?? [];
 
   // Handler for editing: open the Update modal and set the selected task
   const handleEdit = (task: Task) => {
@@ -84,9 +86,10 @@ const TaskPage = () => {
 
         <button
           onClick={() => setIsCreateModalOpen(true)}
-          className="bg-purple-500 hover:bg-purple-700 text-white px-5 py-2.5 rounded-lg font-medium shadow-sm transition-all flex items-center gap-2 cursor-pointer"
+          className="flex items-center bg-purple-500 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-medium shadow-sm transition-all gap-2 cursor-pointer"
         >
-          <span>+</span> New Task
+          <PlusCircle size={18} />
+          Add Task
         </button>
       </div>
 
@@ -129,7 +132,7 @@ const TaskPage = () => {
       <CreateTaskModal
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
-        users={usersData || []}
+        users={users || []}
       />
 
       {/* 2. Update Task Modal */}
@@ -139,7 +142,7 @@ const TaskPage = () => {
           setIsUpdateModalOpen(false);
           setSelectedTask(null);
         }}
-        users={usersData || []}
+        users={users || []}
         task={selectedTask}
       />
     </div>

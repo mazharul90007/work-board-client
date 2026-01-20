@@ -6,7 +6,7 @@ import {
   TaskQueryParams,
   UpdateTaskInput,
 } from "../interfaces/task.interface";
-import { User } from "../interfaces/user.interface";
+import { User, UserQueryParams } from "../interfaces/user.interface";
 import api from "./axios";
 
 export interface ApiResponse<M, T> {
@@ -33,9 +33,13 @@ export const authApi = {
 
 // ====================Users API=============
 export const usersApi = {
-  getAll: async (): Promise<User[]> => {
-    const { data } = await api.get<ApiResponse<null, User[]>>("/user");
-    return data.data;
+  getAll: async (
+    params?: UserQueryParams,
+  ): Promise<{ data: User[]; meta: Pagination }> => {
+    const response = await api.get<ApiResponse<Pagination, User[]>>("/user", {
+      params,
+    });
+    return { data: response.data.data, meta: response.data.meta! };
   },
 
   // getById: async (id: string): Promise<User> => {

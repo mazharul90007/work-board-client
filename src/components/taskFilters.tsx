@@ -16,7 +16,7 @@ export const TaskFilters = ({
 }: TaskFiltersProps) => {
   return (
     <div className="flex flex-wrap items-center gap-3">
-      {/* Status Filter */}
+      {/* ==================Status Filter===================== */}
       <div className="relative group min-w-35">
         <div
           className={`flex items-center gap-2 px-4 py-2 bg-white border ${
@@ -59,7 +59,7 @@ export const TaskFilters = ({
         </select>
       </div>
 
-      {/* Priority Filter */}
+      {/* ===============Priority Filter=============== */}
       <div className="relative group min-w-35">
         {/* Visual Layer */}
         <div

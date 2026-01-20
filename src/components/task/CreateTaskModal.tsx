@@ -52,7 +52,7 @@ export default function CreateTaskModal({
   };
 
   return (
-    <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 text-slate-900">
+    <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/60 p-4 text-slate-900">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-xl overflow-hidden animate-in fade-in zoom-in duration-200">
         <div className="flex items-center justify-between p-6 border-b border-slate-100">
           <h2 className="text-xl font-bold text-slate-800">Create New Task</h2>

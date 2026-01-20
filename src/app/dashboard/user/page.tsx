@@ -13,6 +13,7 @@ import UserFilter from "@/src/components/user/userFilters";
 import { useAuthStore } from "@/src/stores/useAuthStore";
 import UserList from "@/src/components/user/userList";
 import Pagination from "@/src/components/pagination";
+import CreateUserModal from "@/src/components/user/CreateUserModal";
 
 const UserPage = () => {
   const [page, setPage] = useState(1);
@@ -22,6 +23,7 @@ const UserPage = () => {
     "all",
   );
   const [searchTerm, setSearchTerm] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const currentUser = useAuthStore((state) => state.user);
 
@@ -93,7 +95,10 @@ const UserPage = () => {
           </button>
 
           {/* Add Member Button */}
-          <button className="flex items-center bg-purple-500 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-medium shadow-sm transition-all gap-2 cursor-pointer">
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="flex items-center bg-purple-500 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-medium shadow-sm transition-all gap-2 cursor-pointer"
+          >
             <PlusCircle size={18} />
             Add Member
           </button>
@@ -120,6 +125,12 @@ const UserPage = () => {
 
       {/* User List Cards */}
       <UserList users={users} />
+
+      {/* Modal Component */}
+      <CreateUserModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
 
       {/* Pagination */}
       <div className="pt-4 border-t border-gray-100">

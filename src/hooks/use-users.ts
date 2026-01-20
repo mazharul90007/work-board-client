@@ -1,9 +1,19 @@
 "use client";
 
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { usersApi } from "../lib/api-client";
-import { User, UserQueryParams } from "../interfaces/user.interface";
+import {
+  CreateUserInput,
+  User,
+  UserQueryParams,
+} from "../interfaces/user.interface";
 import { Pagination } from "../interfaces/task.interface";
+import { toast } from "react-toastify";
 
 // ============================Get all users================
 export function useGetUsers(params?: UserQueryParams) {
@@ -18,6 +28,23 @@ export function useGetUsers(params?: UserQueryParams) {
     staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
     placeholderData: keepPreviousData,
+  });
+}
+
+// =====================Create User===================
+export function useCreateUser() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (input: CreateUserInput) => usersApi.createUser(input),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      toast.success("User created successfully!");
+    },
+    onError: (error: Error) => {
+      const errorMessage = error.message || "Something went wrong";
+      toast.error(`Failed: ${errorMessage}`);
+    },
   });
 }
 

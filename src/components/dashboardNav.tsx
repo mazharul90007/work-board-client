@@ -10,7 +10,6 @@ import {
   Calendar,
   LineChart,
   MessageSquare,
-  Clock,
   FileText,
   ShieldCheck,
   Settings,
@@ -22,9 +21,8 @@ const menuItems = [
   { name: "Task", icon: CheckSquare, href: "/dashboard/task" },
   { name: "Calendar", icon: Calendar, href: "/dashboard/calendar" },
   { name: "Performance", icon: LineChart, href: "/dashboard/performance" },
-  { name: "Messages", icon: MessageSquare, href: "/dashboard/messages" },
-  { name: "Attendance", icon: Clock, href: "/dashboard/attendance" },
-  { name: "Reports", icon: FileText, href: "/dashboard/reports" },
+  // { name: "Messages", icon: MessageSquare, href: "/dashboard/messages" },
+  // { name: "Reports", icon: FileText, href: "/dashboard/reports" },
   { name: "Roles & Permissions", icon: ShieldCheck, href: "/dashboard/roles" },
   { name: "Settings", icon: Settings, href: "/dashboard/settings" },
 ];
@@ -56,13 +54,13 @@ export default function DashboardNav() {
               href={item.href}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
                 isActive
-                  ? "bg-green-50 text-green-600"
-                  : "text-slate-500 hover:bg-slate-50 hover:text-slate-700"
+                  ? "bg-purple-200 text-purple-600 font-medium"
+                  : "text-slate-500 hover:bg-purple-100 hover:text-slate-700"
               }`}
             >
               <item.icon
                 size={20}
-                className={isActive ? "text-green-600" : "text-slate-400"}
+                className={isActive ? "text-purple-500" : "text-slate-400"}
               />
               {item.name}
             </Link>

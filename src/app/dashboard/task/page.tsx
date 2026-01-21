@@ -72,7 +72,7 @@ const TaskPage = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-8 space-y-8 bg-[#FBFBFC] min-h-screen text-slate-900">
+    <div className="p-8 min-h-screen bg-[#F8FAFC] space-y-6">
       {/* Header Section */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>

@@ -69,6 +69,10 @@ export const usersApi = {
 
     return data.data;
   },
+  deleteUser: async (id: string) => {
+    const { data } = await api.delete<ApiResponse<null, User>>(`/user/${id}`);
+    return data;
+  },
 };
 
 // ===================Tasks API==============

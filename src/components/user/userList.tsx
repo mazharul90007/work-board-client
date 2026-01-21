@@ -11,8 +11,9 @@ import {
 } from "lucide-react";
 import { User, UserStatus } from "../../interfaces/user.interface";
 import Swal from "sweetalert2";
-import { useUpdateUser } from "@/src/hooks/use-users";
+import { useDeleteUser, useUpdateUser } from "@/src/hooks/use-users";
 import Image from "next/image";
+import { useAuthStore } from "@/src/stores/useAuthStore";
 
 interface UserListProps {
   users: User[];
@@ -24,6 +25,10 @@ const UserList = ({ users, onEdit }: UserListProps) => {
   const menuRef = useRef<HTMLDivElement>(null);
 
   const { mutate: updateUser } = useUpdateUser();
+  const { mutate: deleteUser } = useDeleteUser();
+
+  //get Auth User
+  const currentUser = useAuthStore((state) => state.user);
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -55,19 +60,32 @@ const UserList = ({ users, onEdit }: UserListProps) => {
     });
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = (id: string, userName: string) => {
     setOpenMenuId(null);
+
+    //User will not be able to delete his own account
+    if (id === currentUser?.id) {
+      Swal.fire({
+        title: "Action Denied",
+        text: "You cannot delete your own account.",
+        icon: "error",
+        confirmButtonColor: "#9333ea",
+      });
+      return;
+    }
+
     Swal.fire({
-      title: "Delete User?",
-      text: "This action cannot be undone!",
+      title: "Are you sure?",
+      text: `You are about to delete ${userName}. This will also remove all associated tasks!`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#ef4444",
-      confirmButtonText: "Yes, delete!",
+      cancelButtonColor: "#64748b",
+      confirmButtonText: "Yes, delete user",
     }).then((result) => {
       if (result.isConfirmed) {
-        // Call your delete mutation here
-        console.log("Deleting user:", id);
+        // 4. Trigger the mutation
+        deleteUser(id);
       }
     });
   };
@@ -219,10 +237,22 @@ const UserList = ({ users, onEdit }: UserListProps) => {
                           Edit Profile
                         </button>
                         <button
-                          onClick={() => handleDelete(user.id)}
-                          className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+                          onClick={() =>
+                            handleDelete(
+                              user.id,
+                              user.name ? user.name : user.email,
+                            )
+                          }
+                          className={`w-full flex items-center gap-2 px-3 py-2 text-sm transition-colors cursor-pointer ${
+                            user.id === currentUser?.id
+                              ? "text-slate-300 cursor-not-allowed"
+                              : "text-red-600 hover:bg-red-50"
+                          }`}
                         >
-                          <Trash2 size={14} className="text-red-400" />
+                          <Trash2
+                            size={14}
+                            className={`${user.id === currentUser?.id ? "text-red-200" : "text-red-400"}`}
+                          />
                           Delete User
                         </button>
                       </div>

@@ -77,18 +77,19 @@ export function useUpdateUser() {
   });
 }
 
-// // ============================Delete user======================
-// export function useDeleteUser() {
-//   const queryClient = useQueryClient();
+// ============================Delete user======================
+export function useDeleteUser() {
+  const queryClient = useQueryClient();
 
-//   return useMutation({
-//     mutationFn: (id: string) => usersApi.delete(id),
-//     onSuccess: () => {
-//       queryClient.invalidateQueries({ queryKey: ["users"] });
-//       toast.success("User deleted successfully!");
-//     },
-//     onError: (error: Error) => {
-//       toast.error(`Failed to delete user: ${error.message}`);
-//     },
-//   });
-// }
+  return useMutation({
+    mutationFn: (id: string) => usersApi.deleteUser(id),
+    onSuccess: (response) => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      toast.success(response.message || "User deleted successfully!");
+    },
+    onError: (error: Error) => {
+      const errorMessage = error.message || "Something went wrong";
+      toast.error(`Failed to delete user: ${errorMessage}`);
+    },
+  });
+}

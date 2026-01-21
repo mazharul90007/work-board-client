@@ -8,6 +8,7 @@ import {
 } from "../interfaces/task.interface";
 import {
   CreateUserInput,
+  UpdateUserInput,
   User,
   UserQueryParams,
 } from "../interfaces/user.interface";
@@ -60,11 +61,14 @@ export const usersApi = {
   //   return data.data;
   // },
 
-  // update: async (id: string, input: UpdateUserInput) => {
-  //   const { data } = await api.patch<ApiResponse<User>>(`/user/${id}`, input);
+  updateUser: async (id: string, input: UpdateUserInput) => {
+    const { data } = await api.patch<ApiResponse<null, User>>(
+      `/user/${id}`,
+      input,
+    );
 
-  //   return data.data;
-  // },
+    return data.data;
+  },
 };
 
 // ===================Tasks API==============

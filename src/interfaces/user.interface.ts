@@ -30,7 +30,11 @@ export interface CreateUserInput {
 
 export interface UpdateUserInput {
   email?: string;
+  password?: string;
   name?: string;
+  phone?: string;
+  role?: UserRole;
+  status?: UserStatus;
 }
 
 export interface UserQueryParams {

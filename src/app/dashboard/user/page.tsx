@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { useGetUsers } from "@/src/hooks/use-users";
 import {
+  User,
   UserQueryParams,
   UserRole,
   UserStatus,
@@ -14,6 +15,7 @@ import { useAuthStore } from "@/src/stores/useAuthStore";
 import UserList from "@/src/components/user/userList";
 import Pagination from "@/src/components/pagination";
 import CreateUserModal from "@/src/components/user/CreateUserModal";
+import UpdateUserModal from "@/src/components/user/UpdateUserModal";
 
 const UserPage = () => {
   const [page, setPage] = useState(1);
@@ -24,8 +26,16 @@ const UserPage = () => {
   );
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   const currentUser = useAuthStore((state) => state.user);
+
+  // Function to open update modal
+  const handleEditUser = (user: User) => {
+    setSelectedUser(user);
+    setIsUpdateModalOpen(true);
+  };
 
   const params = useMemo((): UserQueryParams => {
     const baseParams: UserQueryParams = { page, limit, status };
@@ -124,12 +134,22 @@ const UserPage = () => {
       {/* =============== TABLE SECTION ============= */}
 
       {/* User List Cards */}
-      <UserList users={users} />
+      <UserList users={users} onEdit={handleEditUser} />
 
       {/* Modal Component */}
       <CreateUserModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+      />
+
+      {/* Update Modal Component */}
+      <UpdateUserModal
+        isOpen={isUpdateModalOpen}
+        onClose={() => {
+          setIsUpdateModalOpen(false);
+          setSelectedUser(null);
+        }}
+        user={selectedUser}
       />
 
       {/* Pagination */}

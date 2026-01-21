@@ -9,6 +9,7 @@ import {
 import { usersApi } from "../lib/api-client";
 import {
   CreateUserInput,
+  UpdateUserInput,
   User,
   UserQueryParams,
 } from "../interfaces/user.interface";
@@ -57,23 +58,24 @@ export function useCreateUser() {
 //   });
 // }
 
-// // ==========================Update user=================
-// export function useUpdateUser() {
-//   const queryClient = useQueryClient();
+// ==========================Update user=================
+export function useUpdateUser() {
+  const queryClient = useQueryClient();
 
-//   return useMutation({
-//     mutationFn: ({ id, input }: { id: string; input: UpdateUserInput }) =>
-//       usersApi.update(id, input),
-//     onSuccess: (data) => {
-//       queryClient.invalidateQueries({ queryKey: ["users"] });
-//       queryClient.invalidateQueries({ queryKey: ["user", data.id] });
-//       toast.success("User updated successfully!");
-//     },
-//     onError: (error: Error) => {
-//       toast.error(`Failed to update user: ${error.message}`);
-//     },
-//   });
-// }
+  return useMutation({
+    mutationFn: ({ id, input }: { id: string; input: UpdateUserInput }) =>
+      usersApi.updateUser(id, input),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({ queryKey: ["user", data.id] });
+      toast.success("User updated successfully!");
+    },
+    onError: (error: Error) => {
+      const errorMessage = error.message || "Something went wrong";
+      toast.error(`Failed to update user: ${errorMessage}`);
+    },
+  });
+}
 
 // // ============================Delete user======================
 // export function useDeleteUser() {

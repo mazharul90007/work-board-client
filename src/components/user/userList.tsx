@@ -11,10 +11,18 @@ import {
 } from "lucide-react";
 import { User, UserStatus } from "../../interfaces/user.interface";
 import Swal from "sweetalert2";
+import { useUpdateUser } from "@/src/hooks/use-users";
 
-const UserList = ({ users }: { users: User[] }) => {
+interface UserListProps {
+  users: User[];
+  onEdit: (user: User) => void;
+}
+
+const UserList = ({ users, onEdit }: UserListProps) => {
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  const { mutate: updateUser } = useUpdateUser();
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -38,8 +46,10 @@ const UserList = ({ users }: { users: User[] }) => {
       confirmButtonText: "Yes, update it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        // Call your update status mutation here
-        console.log("Updating status to:", newStatus);
+        updateUser({
+          id: user.id,
+          input: { status: newStatus },
+        });
       }
     });
   };
@@ -155,14 +165,14 @@ const UserList = ({ users }: { users: User[] }) => {
                       className={`absolute right-0 mt-2 w-48 bg-white border border-slate-200 rounded-xl shadow-xl z-50 p-2 animate-in fade-in zoom-in duration-100 ${index === users.length - 1 && users.length > 3 ? "bottom-full mb-2" : "mt-2"}`}
                     >
                       <div className="mb-1">
-                        <div className="px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-purple-50 rounded">
+                        <div className="px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-purple-100 rounded">
                           Change Status
                         </div>
                         <button
                           onClick={() =>
                             handleStatusUpdate(user, UserStatus.ACTIVE)
                           }
-                          className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 transition-colors"
+                          className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 transition-colors cursor-pointer"
                         >
                           <CheckCircle size={14} className="text-green-500" />
                           Activate User
@@ -171,7 +181,7 @@ const UserList = ({ users }: { users: User[] }) => {
                           onClick={() =>
                             handleStatusUpdate(user, UserStatus.BLOCKED)
                           }
-                          className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 transition-colors"
+                          className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 transition-colors cursor-pointer"
                         >
                           <Ban size={14} className="text-red-500" />
                           Block User
@@ -179,16 +189,22 @@ const UserList = ({ users }: { users: User[] }) => {
                       </div>
 
                       <div className="mt-1 pt-1 border-t border-slate-100">
-                        <div className="px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-slate-50 rounded">
+                        <div className="px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-purple-100 rounded">
                           Account
                         </div>
-                        <button className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 transition-colors">
+                        <button
+                          onClick={() => {
+                            onEdit(user);
+                            setOpenMenuId(null);
+                          }}
+                          className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 transition-colors cursor-pointer"
+                        >
                           <Pencil size={14} className="text-slate-400" />
                           Edit Profile
                         </button>
                         <button
                           onClick={() => handleDelete(user.id)}
-                          className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                          className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
                         >
                           <Trash2 size={14} className="text-red-400" />
                           Delete User

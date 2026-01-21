@@ -132,7 +132,7 @@ export default function TaskList({
 
       {/* ==================Task Cards============ */}
       <div className="space-y-3">
-        {tasks.map((task) => {
+        {tasks.map((task, index) => {
           const assignedByName = task.assignedBy?.name ?? "User";
           const assignedToName = task.assignedTo?.name ?? "Unassigned";
           const isOverdue =
@@ -254,7 +254,9 @@ export default function TaskList({
                   </button>
 
                   {openMenuId === task.id && (
-                    <div className="absolute right-0 mt-2 w-52 bg-white border border-slate-200 rounded-xl shadow-xl z-100 overflow-hidden animate-in fade-in zoom-in duration-100 p-2">
+                    <div
+                      className={`absolute right-0 mt-2 w-52 bg-white border border-slate-200 rounded-xl shadow-xl z-100 animate-in fade-in zoom-in duration-100 p-2 ${index === tasks.length - 1 && tasks.length > 2 ? "bottom-full mb-2" : "top-full mt-2"}`}
+                    >
                       <div className="">
                         <div className="px-4 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 bg-purple-100 rounded">
                           Task Status

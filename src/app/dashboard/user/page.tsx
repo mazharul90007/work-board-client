@@ -8,7 +8,7 @@ import {
   UserRole,
   UserStatus,
 } from "@/src/interfaces/user.interface";
-import { Loader2, Search, PlusCircle, Filter, RefreshCcw } from "lucide-react";
+import { Loader2, Search, PlusCircle, RefreshCcw } from "lucide-react";
 import UserViewToggle from "@/src/components/user/userViewToggle";
 import UserFilter from "@/src/components/user/userFilters";
 import { useAuthStore } from "@/src/stores/useAuthStore";

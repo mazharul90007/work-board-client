@@ -34,6 +34,12 @@ api.interceptors.response.use(
       _retry?: boolean;
     };
 
+    // If the request was for login, don't try to refresh tokens.
+    // Just throw the error immediately!
+    if (originalRequest.url?.includes("/auth/login")) {
+      return Promise.reject(error);
+    }
+
     if (error.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
         return new Promise((resolve, reject) => {

@@ -24,11 +24,15 @@ export interface ApiResponse<M, T> {
 // ====================Auth API=============
 export const authApi = {
   login: async (credentials: loginCredentials): Promise<loginResponse> => {
-    const response = await api.post<ApiResponse<null, loginResponse>>(
-      "/auth/login",
-      credentials,
-    );
-    return response.data.data;
+    try {
+      const response = await api.post<ApiResponse<null, loginResponse>>(
+        "/auth/login",
+        credentials,
+      );
+      return response.data.data;
+    } catch (error) {
+      throw error;
+    }
   },
 
   logout: async (): Promise<void> => {

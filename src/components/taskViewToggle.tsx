@@ -14,7 +14,7 @@ export default function TaskViewToggle({
   ] as const;
 
   return (
-    <div className="flex bg-purple-100 p-1 rounded-xl border border-gray-200">
+    <div className="flex gap-2 bg-purple-100 p-1 rounded-xl border border-gray-200">
       {options.map((option) => (
         <button
           key={option.id}

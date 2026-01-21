@@ -9,8 +9,6 @@ import {
   CheckSquare,
   Calendar,
   LineChart,
-  MessageSquare,
-  FileText,
   ShieldCheck,
   Settings,
 } from "lucide-react";

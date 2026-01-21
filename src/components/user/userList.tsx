@@ -12,6 +12,7 @@ import {
 import { User, UserStatus } from "../../interfaces/user.interface";
 import Swal from "sweetalert2";
 import { useUpdateUser } from "@/src/hooks/use-users";
+import Image from "next/image";
 
 interface UserListProps {
   users: User[];
@@ -92,9 +93,24 @@ const UserList = ({ users, onEdit }: UserListProps) => {
             >
               <td className="py-4 px-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-700 font-bold text-sm shadow-inner">
-                    {user.name?.charAt(0) || user.email.charAt(0).toUpperCase()}
+                  {/* Avatar / Profile Photo Logic */}
+                  <div className="relative w-10 h-10 shrink-0">
+                    {user.profilePhoto ? (
+                      <Image
+                        src={user.profilePhoto}
+                        alt={user.name || "User Avatar"}
+                        fill
+                        className="rounded-full object-cover border border-slate-100 shadow-inner"
+                        sizes="40px"
+                      />
+                    ) : (
+                      <div className="w-full h-full rounded-full bg-purple-100 flex items-center justify-center text-purple-700 font-bold text-sm shadow-inner">
+                        {user.name?.charAt(0) ||
+                          user.email.charAt(0).toUpperCase()}
+                      </div>
+                    )}
                   </div>
+
                   <div>
                     <div className="text-sm font-bold text-slate-800">
                       {user.name || "Unnamed User"}

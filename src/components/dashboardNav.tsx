@@ -12,21 +12,42 @@ import {
   ShieldCheck,
   Settings,
 } from "lucide-react";
+import { UserRole } from "../interfaces/user.interface";
+import { useAuthStore } from "../stores/useAuthStore";
 
 const menuItems = [
   { name: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
-  { name: "Members", icon: Users, href: "/dashboard/user" },
+  {
+    name: "Members",
+    icon: Users,
+    href: "/dashboard/user",
+    roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN], // Define allowed roles
+  },
   { name: "Task", icon: CheckSquare, href: "/dashboard/task" },
   { name: "Calendar", icon: Calendar, href: "/dashboard/calendar" },
   { name: "Performance", icon: LineChart, href: "/dashboard/performance" },
-  // { name: "Messages", icon: MessageSquare, href: "/dashboard/messages" },
-  // { name: "Reports", icon: FileText, href: "/dashboard/reports" },
-  { name: "Roles & Permissions", icon: ShieldCheck, href: "/dashboard/roles" },
+  {
+    name: "Roles & Permissions",
+    icon: ShieldCheck,
+    href: "/dashboard/roles",
+    roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN],
+  },
   { name: "Settings", icon: Settings, href: "/dashboard/settings" },
 ];
 
 export default function DashboardNav() {
   const pathname = usePathname();
+  const user = useAuthStore((state) => state.user);
+  const userRole = user?.role;
+
+  // Filter the menu items based on the user's role
+  const filteredMenuItems = menuItems.filter((item) => {
+    // If no roles are specified, everyone can see it
+    if (!item.roles) return true;
+
+    // Check if the current user's role is included in the item's allowed roles
+    return userRole && item.roles.includes(userRole as UserRole);
+  });
 
   return (
     <div className="flex flex-col h-full p-4 bg-purple-50">
@@ -44,7 +65,7 @@ export default function DashboardNav() {
         <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 mb-2">
           Main Navigation
         </p>
-        {menuItems.map((item) => {
+        {filteredMenuItems.map((item) => {
           const isActive = pathname === item.href;
           return (
             <Link

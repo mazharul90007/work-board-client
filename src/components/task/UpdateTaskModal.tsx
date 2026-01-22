@@ -27,7 +27,7 @@ export default function UpdateTaskModal({
 }: {
   isOpen: boolean;
   onClose: () => void;
-  users: User[];
+  users?: User[];
   task: Task | null;
 }) {
   const { mutate: updateTask, isPending } = useUpdateTask();

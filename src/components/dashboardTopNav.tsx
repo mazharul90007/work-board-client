@@ -7,7 +7,7 @@ import {
   ChevronRight,
   User,
   Settings,
-  Sparkles,
+  ChevronDown,
 } from "lucide-react";
 import { useAuthStore } from "../stores/useAuthStore";
 import ThemeToggle from "./theme-toggle";
@@ -78,18 +78,32 @@ export default function DashboardTopNav() {
             {/* Trigger Avatar */}
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className={`w-10 h-10 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center text-sm font-black text-white shadow-lg shadow-purple-200 dark:shadow-none overflow-hidden uppercase cursor-pointer transition-all duration-300 ring-offset-2 dark:ring-offset-slate-900 ${
+              className={`relative w-10 h-10 rounded-2xl bg-linear-to-tr from-purple-400 to-purple-600 flex items-center justify-center text-sm font-black text-white shadow-lg shadow-purple-200 dark:shadow-none uppercase cursor-pointer transition-all duration-300 ring-offset-2 dark:ring-offset-slate-900 ${
                 isDropdownOpen
                   ? "ring-2 ring-purple-500 scale-95"
                   : "hover:scale-105 active:scale-95"
               }`}
             >
               {user?.name?.charAt(0) || "U"}
+
+              {/* Small Bottom-Right Arrow Badge */}
+              <div
+                className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 flex items-center justify-center shadow-sm transition-transform duration-300 ${
+                  isDropdownOpen ? "rotate-180" : "rotate-0"
+                }`}
+              >
+                <ChevronDown
+                  size={10}
+                  className={
+                    isDropdownOpen ? "text-purple-600" : "text-slate-500"
+                  }
+                />
+              </div>
             </button>
 
             {/* Premium Animated Dropdown */}
             {isDropdownOpen && (
-              <div className="absolute top-full right-0 mt-3 w-56 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-[1.5rem] shadow-2xl z-60 overflow-hidden animate-in fade-in zoom-in-95 duration-200 origin-top-right">
+              <div className="absolute top-full right-0 mt-3 w-56 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-3xl shadow-2xl z-60 overflow-hidden animate-in fade-in zoom-in-95 duration-200 origin-top-right">
                 {/* User Header Section */}
                 <div className="p-4 bg-slate-50/50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-700">
                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">

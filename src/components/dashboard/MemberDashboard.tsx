@@ -1,11 +1,9 @@
 "use client";
 
-import { useGetUsers } from "@/src/hooks/use-users";
 import { useTasks } from "@/src/hooks/use-tasks";
 import { useAuthStore } from "@/src/stores/useAuthStore";
 import { TaskStatus } from "@/src/interfaces/task.interface";
 import {
-  Users,
   Calendar as CalendarIcon,
   Loader2,
   CheckCircle2,
@@ -18,17 +16,14 @@ import { formatDistanceToNow } from "date-fns";
 import Link from "next/link";
 import StatCard from "./StatCard";
 
-const AdminDashboard = () => {
+const MemberDashboard = () => {
   const currentUser = useAuthStore((state) => state.user);
 
-  // 1. Fetch Real Data
-  const { data: userData, isLoading: usersLoading } = useGetUsers();
+  // 1. Fetch Tasks Data
   const { data: taskData, isLoading: tasksLoading } = useTasks({
     page: 1,
     limit: 100,
   });
-
-  const users = userData?.data ?? [];
   const tasks = taskData?.data ?? [];
 
   // 2. Derive Real Metrics
@@ -50,7 +45,7 @@ const AdminDashboard = () => {
   const completionRate =
     totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
 
-  if (usersLoading || tasksLoading)
+  if (tasksLoading)
     return (
       <div className="flex flex-col justify-center items-center h-[80vh] text-slate-500">
         <Loader2 className="animate-spin mb-4 text-purple-600" size={40} />
@@ -61,7 +56,7 @@ const AdminDashboard = () => {
     );
 
   return (
-    <div className="p-6 lg:p-10 space-y-6 bg-[#FBFBFE] min-h-screen">
+    <div className="p-6 lg:p-10 space-y-10 bg-[#FBFBFE] min-h-screen">
       {/* --- PREMIUM HEADER --- */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
@@ -87,15 +82,7 @@ const AdminDashboard = () => {
       </div>
 
       {/* --- LIVE STATS GRID --- */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-        <StatCard
-          title="Total Members"
-          value={users.length}
-          icon={<Users size={20} />}
-          footer={`${users.filter((u) => u.status === "ACTIVE").length} Active now`}
-          color="bg-purple-600"
-          circleColor="bg-purple-100"
-        />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard
           title="To Do"
           value={todoTasks}
@@ -280,15 +267,6 @@ const AdminDashboard = () => {
             </div>
             <div className="flex flex-col">
               <span className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">
-                Team Load
-              </span>
-              <span className="text-lg font-black text-slate-800">
-                {(totalTasks / (users.length || 1)).toFixed(1)}{" "}
-                <span className="text-xs text-slate-400">t/u</span>
-              </span>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">
                 System Status
               </span>
               <div className="flex items-center gap-1.5 mt-1">
@@ -348,4 +326,4 @@ const AdminDashboard = () => {
   );
 };
 
-export default AdminDashboard;
+export default MemberDashboard;

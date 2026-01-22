@@ -11,6 +11,7 @@ import {
   Task,
   TaskQueryParams,
   UpdateTaskInput,
+  UpdateTaskStatus,
 } from "../interfaces/task.interface";
 import { toast } from "react-toastify";
 
@@ -66,6 +67,22 @@ export function useUpdateTask() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
       toast.success("Task updated successfully!");
+    },
+    onError: (error: Error) => {
+      toast.error(`Failed to update task: ${error.message}`);
+    },
+  });
+}
+
+// ====================Update task==============
+export function useUpdateTaskStatus() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, input }: { id: string; input: UpdateTaskStatus }) =>
+      tasksApi.updateTaskStatus(id, input),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      toast.success("Task status updated successfully!");
     },
     onError: (error: Error) => {
       toast.error(`Failed to update task: ${error.message}`);

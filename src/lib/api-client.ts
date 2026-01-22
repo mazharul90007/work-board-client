@@ -5,6 +5,7 @@ import {
   Task,
   TaskQueryParams,
   UpdateTaskInput,
+  UpdateTaskStatus,
 } from "../interfaces/task.interface";
 import {
   CreateUserInput,
@@ -96,6 +97,10 @@ export const tasksApi = {
   },
   updateTask: async (id: string, data: UpdateTaskInput) => {
     const response = await api.patch(`/task/${id}`, data);
+    return response.data;
+  },
+  updateTaskStatus: async (id: string, data: UpdateTaskStatus) => {
+    const response = await api.patch(`/task/status/${id}`, data);
     return response.data;
   },
   deleteTask: async (id: string) => {

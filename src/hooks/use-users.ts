@@ -17,7 +17,7 @@ import { Pagination } from "../interfaces/task.interface";
 import { toast } from "react-toastify";
 
 // ============================Get all users================
-export function useGetUsers(params?: UserQueryParams) {
+export function useGetUsers(params?: UserQueryParams & { enabled?: boolean }) {
   interface UseUserResult {
     data: User[];
     meta: Pagination;

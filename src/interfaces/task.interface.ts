@@ -67,3 +67,7 @@ export interface UpdateTaskInput {
   assignedToId?: string | null;
   dueDate?: string | null;
 }
+
+export interface UpdateTaskStatus {
+  status: TaskStatus;
+}

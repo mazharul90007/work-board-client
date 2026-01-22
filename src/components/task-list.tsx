@@ -13,7 +13,13 @@ import {
   RefreshCcw,
   ClipboardCheck,
 } from "lucide-react";
-import { useDeleteTask, useUpdateTask } from "../hooks/use-tasks";
+import {
+  useDeleteTask,
+  useUpdateTask,
+  useUpdateTaskStatus,
+} from "../hooks/use-tasks";
+import { useAuthStore } from "../stores/useAuthStore";
+import { UserRole } from "../interfaces/user.interface";
 
 export default function TaskList({
   tasks,
@@ -22,11 +28,17 @@ export default function TaskList({
   tasks: Task[];
   onEdit: (task: Task) => void;
 }) {
+  const currentUser = useAuthStore((state) => state.user);
+  const canManage =
+    currentUser?.role === UserRole.SUPER_ADMIN ||
+    currentUser?.role === UserRole.ADMIN ||
+    currentUser?.role === UserRole.LEADER;
+
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
   const { mutate: deleteTask, isPending: isDeleting } = useDeleteTask();
-  const { mutate: updateTask } = useUpdateTask();
+  const { mutate: updateTaskStatus } = useUpdateTaskStatus();
 
   // handle Delete function
   const handleDelete = (id: string) => {
@@ -78,7 +90,7 @@ export default function TaskList({
       },
     }).then((result) => {
       if (result.isConfirmed) {
-        updateTask({
+        updateTaskStatus({
           id: task.id,
           input: {
             status: newStatus,
@@ -298,34 +310,36 @@ export default function TaskList({
                         </button>
                       </div>
 
-                      <div className="mt-1">
-                        <div className="px-4 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 bg-purple-100 rounded">
-                          Manage
+                      {canManage && (
+                        <div className="mt-1">
+                          <div className="px-4 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 bg-purple-100 rounded">
+                            Manage
+                          </div>
+                          <button
+                            onClick={() => {
+                              onEdit(task);
+                              setOpenMenuId(null);
+                            }}
+                            className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 transition-colors cursor-pointer"
+                          >
+                            <Pencil size={16} className="text-slate-400" />
+                            Edit Details
+                          </button>
+                          <button
+                            disabled={isDeleting}
+                            onClick={() => handleDelete(task.id)}
+                            className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors cursor-pointer disabled:opacity-50"
+                          >
+                            <Trash2
+                              size={16}
+                              className={
+                                isDeleting ? "animate-pulse" : "text-red-400"
+                              }
+                            />
+                            {isDeleting ? "Deleting..." : "Delete Task"}
+                          </button>
                         </div>
-                        <button
-                          onClick={() => {
-                            onEdit(task);
-                            setOpenMenuId(null);
-                          }}
-                          className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 transition-colors cursor-pointer"
-                        >
-                          <Pencil size={16} className="text-slate-400" />
-                          Edit Details
-                        </button>
-                        <button
-                          disabled={isDeleting}
-                          onClick={() => handleDelete(task.id)}
-                          className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors cursor-pointer disabled:opacity-50"
-                        >
-                          <Trash2
-                            size={16}
-                            className={
-                              isDeleting ? "animate-pulse" : "text-red-400"
-                            }
-                          />
-                          {isDeleting ? "Deleting..." : "Delete Task"}
-                        </button>
-                      </div>
+                      )}
                     </div>
                   )}
                 </div>

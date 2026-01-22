@@ -56,7 +56,7 @@ const MemberDashboard = () => {
     );
 
   return (
-    <div className="p-6 lg:p-10 space-y-10 bg-[#FBFBFE] min-h-screen">
+    <div className="p-6 lg:p-10 space-y-6 bg-[#FBFBFE] min-h-screen">
       {/* --- PREMIUM HEADER --- */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
@@ -120,7 +120,7 @@ const MemberDashboard = () => {
       {/* --- MAIN CONTENT --- */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* --- POLISHED WORKSPACE HEALTH SECTION --- */}
-        <div className="lg:col-span-8 bg-white p-8 rounded-[32px] border border-slate-100 shadow-sm relative overflow-hidden flex flex-col">
+        <div className="lg:col-span-8 bg-white p-8 rounded-4xl border border-slate-100 shadow-sm relative overflow-hidden flex flex-col">
           {/* Decorative Background Glow */}
           <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-purple-50 rounded-full blur-3xl opacity-50" />
 

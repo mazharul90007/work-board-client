@@ -13,11 +13,7 @@ import {
   RefreshCcw,
   ClipboardCheck,
 } from "lucide-react";
-import {
-  useDeleteTask,
-  useUpdateTask,
-  useUpdateTaskStatus,
-} from "../hooks/use-tasks";
+import { useDeleteTask, useUpdateTaskStatus } from "../hooks/use-tasks";
 import { useAuthStore } from "../stores/useAuthStore";
 import { UserRole } from "../interfaces/user.interface";
 

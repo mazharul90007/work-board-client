@@ -80,7 +80,7 @@ const AdminTaskPage = () => {
   };
 
   return (
-    <div className="p-8 min-h-screen bg-[#F8FAFC] space-y-6">
+    <div className="p-8 min-h-screen bg-white/80 dark:bg-background space-y-6">
       {/* Header Section */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>

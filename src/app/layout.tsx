@@ -4,6 +4,7 @@ import "./globals.css";
 import { ToastContainer } from "react-toastify";
 import { QueryProvider } from "../lib/query-client";
 import ThemeToggle from "../components/theme-toggle";
+import ThemeEffect from "../providers/theme-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,6 +32,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <QueryProvider>
+          <ThemeEffect />
           {children}
           <ToastContainer
             position="top-right"

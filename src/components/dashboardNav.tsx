@@ -50,13 +50,13 @@ export default function DashboardNav() {
   });
 
   return (
-    <div className="flex flex-col h-full p-4 bg-purple-50">
+    <div className="flex flex-col h-full p-4 bg-purple-50 dark:bg-zinc-800 sticky top-0 z-50">
       {/* Logo Area */}
       <div className="flex items-center gap-2 px-2 mb-8">
         <div className="bg-purple-500 p-1.5 rounded-lg">
           <CheckSquare className="text-white" size={20} />
         </div>
-        <span className="text-xl font-bold text-slate-800 tracking-tight">
+        <span className="text-xl font-bold text-slate-800 dark:text-dark-primary tracking-tight">
           Work Board
         </span>
       </div>

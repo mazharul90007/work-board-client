@@ -20,6 +20,7 @@ export default function DashboardTopNav() {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const user = useAuthStore((state) => state.user);
+
   const { mutate: logoutMutate, isPending } = useLogout();
   const pathname = usePathname();
 
@@ -41,7 +42,9 @@ export default function DashboardTopNav() {
   }, []);
 
   return (
-    <header className="h-18 border-b border-slate-100 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md px-8 flex items-center justify-between sticky top-0 z-50">
+    <header
+      className={`h-18 border-b border-slate-100 dark:border-slate-600 bg-white dark:bg-zinc-800 backdrop-blur-md px-8 flex items-center justify-between sticky top-0 z-50`}
+    >
       {/* LEFT SIDE: Breadcrumbs */}
       <div className="flex items-center gap-4">
         <div className="hidden md:flex items-center gap-2">
@@ -49,9 +52,13 @@ export default function DashboardTopNav() {
             <LayoutGrid size={20} />
           </div>
           <nav className="flex items-center gap-2 text-sm">
-            <span className="text-slate-400 font-medium">Workboard</span>
+            <span className={` text-slate-400 dark:text-white font-medium`}>
+              Workboard
+            </span>
             <ChevronRight size={14} className="text-slate-300" />
-            <span className="text-slate-900 dark:text-slate-100 font-black capitalize tracking-tight">
+            <span
+              className={`text-slate-900 dark:text-slate-100 font-black capitalize tracking-tight`}
+            >
               {currentPage.replace("-", " ")}
             </span>
           </nav>
@@ -64,12 +71,14 @@ export default function DashboardTopNav() {
           <ThemeToggle />
         </div>
 
-        <div className="flex items-center gap-4 pl-6 border-l border-slate-100 dark:border-slate-800">
+        <div
+          className={`flex items-center gap-4 pl-6 border-l border-slate-200  dark:border-slate-500`}
+        >
           <div className="hidden sm:flex flex-col items-end">
             <span className="text-[13px] font-black text-slate-800 dark:text-slate-100 tracking-tight leading-none uppercase">
               {user?.name || "User"}
             </span>
-            <span className="text-[9px] font-black text-purple-500 uppercase tracking-[0.15em] mt-1 bg-purple-50 dark:bg-purple-900/30 px-1.5 py-0.5 rounded-md">
+            <span className="text-[9px] font-black text-purple-500 dark:text-purple-300 uppercase tracking-[0.15em] mt-1 bg-purple-50 dark:bg-purple-200/10 px-1.5 py-0.5 rounded-md">
               {user?.role || "Member"}
             </span>
           </div>
@@ -88,7 +97,7 @@ export default function DashboardTopNav() {
 
               {/* Small Bottom-Right Arrow Badge */}
               <div
-                className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 flex items-center justify-center shadow-sm transition-transform duration-300 ${
+                className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-white dark:bg-slate-200 border-2 border-slate-100 dark:border-slate-800 flex items-center justify-center shadow-sm transition-transform duration-300 ${
                   isDropdownOpen ? "rotate-180" : "rotate-0"
                 }`}
               >

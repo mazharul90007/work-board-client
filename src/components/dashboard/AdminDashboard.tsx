@@ -61,21 +61,24 @@ const AdminDashboard = () => {
     );
 
   return (
-    <div className="p-6 lg:p-10 space-y-6 bg-[#FBFBFE] min-h-screen">
+    <div className="p-6 lg:p-10 space-y-6 bg-white/80 dark:bg-background min-h-screen">
       {/* --- PREMIUM HEADER --- */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-4xl font-black text-slate-900 tracking-tight">
+          <h1 className="text-4xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
             System <span className="text-purple-600">Overview</span>
           </h1>
-          <p className="text-slate-500 font-medium mt-1">
+          <p className="text-slate-500 dark:text-slate-100 font-medium mt-1">
             Welcome back, {currentUser?.name || currentUser?.role}. Here is your
             live workspace status.
           </p>
         </div>
-        <div className="flex items-center gap-3 bg-white p-2 rounded-2xl shadow-sm border border-slate-100">
-          <div className="flex items-center gap-2 px-3 py-1.5 text-xs font-bold text-slate-600">
-            <CalendarIcon size={14} className="text-purple-500" />
+        <div className="flex items-center gap-3 bg-white dark:bg-card-main p-2 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-500">
+          <div className="flex items-center gap-2 px-3 py-1.5 text-xs font-bold text-slate-600 dark:text-dark-primary">
+            <CalendarIcon
+              size={14}
+              className="text-purple-500 dark:text-purple-300"
+            />
             <span>
               {new Date().toLocaleDateString("en-US", {
                 month: "long",
@@ -133,9 +136,9 @@ const AdminDashboard = () => {
       {/* --- MAIN CONTENT --- */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* --- POLISHED WORKSPACE HEALTH SECTION --- */}
-        <div className="lg:col-span-8 bg-white p-8 rounded-4xl border border-slate-100 shadow-sm relative overflow-hidden flex flex-col">
+        <div className="lg:col-span-8 bg-white dark:bg-card-main p-8 rounded-4xl border border-slate-100 dark:border-slate-600 shadow-sm dark:shadow-slate-500 relative overflow-hidden flex flex-col">
           {/* Decorative Background Glow */}
-          <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-purple-50 rounded-full blur-3xl opacity-50" />
+          <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64  dark:bg-purple-600/20 rounded-full blur-3xl" />
 
           {/* MAIN CONTENT ROW */}
           <div className="flex flex-col md:flex-row gap-12 items-center flex-1">
@@ -178,7 +181,7 @@ const AdminDashboard = () => {
                   />
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-5xl font-black text-slate-900 tracking-tighter">
+                  <span className="text-5xl font-black text-slate-900 dark:text-dark-primary tracking-tighter">
                     {completionRate}
                     <span className="text-2xl text-purple-600">%</span>
                   </span>
@@ -261,34 +264,34 @@ const AdminDashboard = () => {
           </div>
 
           {/* --- NEW FOOTER METRICS: This fills the Y-axis gap --- */}
-          <div className="mt-10 pt-8 border-t border-slate-50 grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="mt-10 pt-8 border-t border-slate-50 dark:border-slate-500 grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="flex flex-col">
-              <span className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">
+              <span className="text-slate-400 dark:text-dark-secondary text-[10px] font-bold uppercase tracking-widest">
                 Active Rate
               </span>
-              <span className="text-lg font-black text-slate-800">
+              <span className="text-lg font-black text-slate-800 dark:text-dark-primary">
                 {Math.round((activeTasks / totalTasks) * 100 || 0)}%
               </span>
             </div>
             <div className="flex flex-col">
-              <span className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">
+              <span className="text-slate-400 dark:text-dark-secondary text-[10px] font-bold uppercase tracking-widest">
                 Todo Count
               </span>
-              <span className="text-lg font-black text-slate-800">
+              <span className="text-lg font-black text-slate-800 dark:text-dark-primary">
                 {todoTasks}
               </span>
             </div>
             <div className="flex flex-col">
-              <span className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">
+              <span className="text-slate-400 dark:text-dark-secondary text-[10px] font-bold uppercase tracking-widest">
                 Team Load
               </span>
-              <span className="text-lg font-black text-slate-800">
+              <span className="text-lg font-black text-slate-800 dark:text-dark-primary">
                 {(totalTasks / (users.length || 1)).toFixed(1)}{" "}
                 <span className="text-xs text-slate-400">t/u</span>
               </span>
             </div>
             <div className="flex flex-col">
-              <span className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">
+              <span className="text-slate-400 dark:text-dark-secondary text-[10px] font-bold uppercase tracking-widest">
                 System Status
               </span>
               <div className="flex items-center gap-1.5 mt-1">
@@ -302,9 +305,11 @@ const AdminDashboard = () => {
         </div>
 
         {/* Live Task Feed */}
-        <div className="lg:col-span-4 bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col">
+        <div className="lg:col-span-4 bg-white dark:bg-white/3 p-6 rounded-3xl border border-slate-100 dark:border-slate-600  shadow-sm dark:shadow-slate-500 flex flex-col">
           <div className="flex justify-between items-center mb-8">
-            <h2 className="text-xl font-black text-slate-800">Live Feed</h2>
+            <h2 className="text-xl font-black text-slate-800 dark:text-dark-primary">
+              Live Feed
+            </h2>
             <div className="w-2 h-2 bg-emerald-600 rounded-full animate-ping" />
           </div>
 
@@ -312,21 +317,21 @@ const AdminDashboard = () => {
             {tasks.slice(0, 5).map((task) => (
               <div
                 key={task.id}
-                className="flex gap-4 group cursor-pointer bg-purple-50 border-2 border-purple-100 shadow rounded-xl px-2 py-3"
+                className="flex gap-4 group cursor-pointer bg-white dark:bg-white/3 border-2 border-slate-100 dark:border-white/5 hover:border-purple-500/50 shadow rounded-xl px-2 py-3"
               >
                 <div className="flex flex-col items-center">
-                  <div className="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center text-xs font-black text-purple-600 transition-all duration-300">
+                  <div className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 flex items-center justify-center text-xs font-black text-purple-600 dark:text-purple-400 transition-all duration-300">
                     {task.assignedTo?.name?.charAt(0) || "U"}
                   </div>
                   {/* <div className="w-0.5 h-full bg-slate-50 group-last:hidden" /> */}
                 </div>
                 <div className="flex-1">
                   <div className="flex justify-between items-start">
-                    <p className="text-sm font-bold text-slate-800 group-hover:text-purple-600 transition-colors line-clamp-1">
+                    <p className="text-sm font-bold text-slate-800 dark:text-zinc-100 group-hover:text-purple-600 transition-colors line-clamp-1">
                       {task.title}
                     </p>
                   </div>
-                  <p className="text-[10px] text-slate-400 font-bold mt-1 uppercase tracking-tight">
+                  <p className="text-[10px] text-slate-400 dark:text-zinc-500 font-bold mt-1 uppercase tracking-tight">
                     {task.createdAt
                       ? formatDistanceToNow(new Date(task.createdAt)) + " ago"
                       : "Just now"}
@@ -338,7 +343,7 @@ const AdminDashboard = () => {
 
           <Link
             href={"/dashboard/task"}
-            className="w-full flex items-center justify-center mt-8 py-4 bg-purple-500 hover:bg-purple-700 text-white font-bold text-xs rounded-xl transition-all uppercase tracking-widest shadow-lg shadow-slate-200 cursor-pointer"
+            className="w-full flex items-center justify-center mt-8 py-4 bg-purple-500 hover:bg-purple-700 text-white font-bold text-xs rounded-xl transition-all uppercase tracking-widest shadow-lg dark:shadow shadow-slate-200 cursor-pointer"
           >
             View All Tasks
           </Link>

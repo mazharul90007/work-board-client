@@ -40,7 +40,9 @@ export function useLogout() {
 
       // 2. Notify and redirect
       toast.info("Logged out successfully");
-      router.replace("/");
+      if (typeof window !== "undefined") {
+        window.location.href = "/";
+      }
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError: (error: any) => {

@@ -8,7 +8,7 @@ interface FailedRequest {
 }
 
 const api = axios.create({
-  baseURL: "http://localhost:5173",
+  baseURL: "https://workboard-server-nestjs.onrender.com",
   withCredentials: true,
   headers: { "Content-Type": "application/json" },
 });
@@ -41,6 +41,10 @@ api.interceptors.response.use(
     }
 
     if (error.response?.status === 401 && !originalRequest._retry) {
+      const user = useAuthStore.getState().user;
+      if (!user) {
+        return Promise.reject(error);
+      }
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });

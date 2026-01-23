@@ -8,7 +8,6 @@ import {
   Loader2,
   CheckCircle2,
   Zap,
-  Activity,
   ClipboardList,
   ListTodo,
 } from "lucide-react";
@@ -61,10 +60,10 @@ const MemberDashboard = () => {
       {/* --- PREMIUM HEADER --- */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-4xl font-black text-slate-900 tracking-tight">
+          <h1 className="text-4xl font-black text-slate-900 dark:text-dark-primary tracking-tight">
             System <span className="text-purple-600">Overview</span>
           </h1>
-          <p className="text-slate-500 font-medium mt-1">
+          <p className="text-slate-500 dark:text-dark-secondary font-medium mt-1">
             Welcome back, {currentUser?.name || currentUser?.role}. Here is your
             live workspace status.
           </p>

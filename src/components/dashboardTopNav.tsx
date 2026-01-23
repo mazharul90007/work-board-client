@@ -112,7 +112,7 @@ export default function DashboardTopNav() {
 
             {/* Premium Animated Dropdown */}
             {isDropdownOpen && (
-              <div className="absolute top-full right-0 mt-3 w-56 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-3xl shadow-2xl z-60 overflow-hidden animate-in fade-in zoom-in-95 duration-200 origin-top-right">
+              <div className="absolute top-full right-0 mt-3 w-56 bg-white dark:bg-dropdown-background border border-slate-100 dark:border-slate-700 rounded-3xl shadow-2xl z-60 overflow-hidden animate-in fade-in zoom-in-95 duration-200 origin-top-right">
                 {/* User Header Section */}
                 <div className="p-4 bg-slate-50/50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-700">
                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">
@@ -125,7 +125,7 @@ export default function DashboardTopNav() {
 
                 {/* Menu Options */}
                 <div className="p-2">
-                  <Link
+                  {/* <Link
                     href="/dashboard/profile"
                     onClick={() => setIsDropdownOpen(false)}
                     className="w-full flex items-center gap-3 px-3 py-2.5 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 dark:hover:text-purple-400 rounded-xl transition-colors group"
@@ -134,7 +134,7 @@ export default function DashboardTopNav() {
                       <User size={14} />
                     </div>
                     <span>View Profile</span>
-                  </Link>
+                  </Link> */}
 
                   <Link
                     href="/dashboard/settings"

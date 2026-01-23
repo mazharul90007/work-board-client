@@ -8,7 +8,7 @@ import TaskList from "@/src/components/task-list";
 import TaskViewToggle from "@/src/components/taskViewToggle";
 import { TaskFilters } from "@/src/components/taskFilters";
 import { useAuthStore } from "@/src/stores/useAuthStore";
-import { RefreshCcw } from "lucide-react";
+import { Loader2, RefreshCcw } from "lucide-react";
 import UpdateTaskModal from "@/src/components/task/UpdateTaskModal";
 
 const MemberTaskPage = () => {
@@ -51,7 +51,25 @@ const MemberTaskPage = () => {
   };
 
   const { data, isLoading, isError, error } = useTasks(params);
-  if (isLoading) return <div>Loading tasks...</div>;
+  if (isLoading)
+    return (
+      <div className="flex flex-col justify-center items-center h-screen bg-white dark:bg-background transition-colors duration-500">
+        <div className="relative flex items-center justify-center">
+          {/* Outer pulse effect */}
+          <div className="absolute w-16 h-16 bg-purple-500/20 rounded-full animate-ping" />
+
+          {/* Main Spinner */}
+          <Loader2
+            className="animate-spin text-purple-600 dark:text-purple-400 z-10"
+            size={42}
+          />
+        </div>
+
+        <span className="mt-6 font-black tracking-[0.2em] text-[10px] uppercase animate-pulse text-slate-500 dark:text-zinc-500">
+          Synchronizing Real-time Data
+        </span>
+      </div>
+    );
 
   if (isError)
     return <div>Error: {error instanceof Error ? error.message : "Error"}</div>;
@@ -65,21 +83,19 @@ const MemberTaskPage = () => {
     setIsUpdateModalOpen(true);
   };
   return (
-    <div className="p-8 min-h-screen bg-[#F8FAFC] space-y-6">
+    <div className="p-8 min-h-screen bg-[#F8FAFC] dark:bg-background space-y-6">
       {/* Header Section */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">
-            Member Workspaces
-          </h1>
-          <p className="text-gray-500 mt-1">
-            Manage and track your teams progress.
-          </p>
-        </div>
+      <div>
+        <h1 className="text-4xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
+          Member <span className="text-purple-600">Workspaces</span>
+        </h1>
+        <p className="text-slate-500 dark:text-dark-secondary font-medium mt-1">
+          Manage and track your teams progress.
+        </p>
       </div>
 
       {/* Toolbar */}
-      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 bg-white dark:bg-card-main p-4 mb-4 rounded-xl border border-gray-200 dark:border-slate-600 shadow-sm">
         <TaskViewToggle view={view} onChange={setView} />
 
         <div className="flex items-center gap-3 w-full sm:w-auto">
@@ -103,7 +119,7 @@ const MemberTaskPage = () => {
       <TaskList tasks={tasks} onEdit={handleEdit} />
 
       {/* Pagination */}
-      <div className="pt-4 border-t border-gray-100">
+      <div className="pt-4 border-t border-gray-100 dark:border-slate-500">
         {meta && (
           <Pagination
             page={meta.page}

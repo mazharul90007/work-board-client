@@ -74,6 +74,19 @@ const UserList = ({ users, onEdit }: UserListProps) => {
     });
   };
 
+  if (users.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-24 bg-white dark:bg-card-main rounded-2xl border border-dashed border-slate-200 dark:border-slate-500">
+        <div className="bg-slate-50 dark:bg-slate-300 p-4 rounded-full mb-4">
+          <UserIcon className="w-8 h-8 text-slate-300 dark:text-slate-600" />
+        </div>
+        <p className="text-slate-600 dark:text-dark-secondary font-semibold text-lg">
+          No users in sight
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
       {users?.map((user: User) => (
@@ -179,7 +192,7 @@ const UserList = ({ users, onEdit }: UserListProps) => {
           <div className="space-y-4 mb-8">
             <div className="flex justify-between items-center text-sm">
               <span className="font-bold text-slate-400">Email</span>
-              <span className="font-bold text-slate-700 dark:text-zinc-300 truncate max-w-[180px]">
+              <span className="font-bold text-slate-700 dark:text-zinc-300 truncate max-w-45">
                 {user.email}
               </span>
             </div>
@@ -209,7 +222,7 @@ const UserList = ({ users, onEdit }: UserListProps) => {
               <UserIcon size={16} />
               Profile
             </button>
-            <button className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-emerald-500 dark:bg-emerald-700 hover:bg-emerald-600 text-sm font-bold text-white transition-all shadow-md shadow-emerald-100 dark:shadow-none cursor-pointer">
+            <button className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-purple-500 dark:bg-purple-700 hover:bg-purple-600 text-sm font-bold text-white transition-all shadow-md shadow-purple-100 dark:shadow-none cursor-pointer">
               <MessageSquare size={16} />
               Message
             </button>

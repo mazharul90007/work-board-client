@@ -16,14 +16,14 @@ export const TaskFilters = ({
 }: TaskFiltersProps) => {
   return (
     <div className="flex flex-wrap items-center gap-3">
-      {/* ==================Status Filter===================== */}
+      {/* ================== Status Filter ===================== */}
       <div className="relative group min-w-35">
         <div
-          className={`flex items-center gap-2 px-4 py-2 bg-white border ${
+          className={`flex items-center gap-2 px-4 py-2 bg-white dark:bg-card-main border ${
             status
-              ? "border-blue-500 ring-1 ring-blue-100"
-              : "border-purple-100"
-          } rounded-full group-hover:bg-gray-50 transition-all shadow-sm`}
+              ? "border-blue-500 ring-1 ring-blue-100 dark:ring-blue-900/30"
+              : "border-purple-100 dark:border-slate-500"
+          } rounded-full group-hover:bg-gray-50 dark:group-hover:bg-white/5 transition-all shadow-sm`}
         >
           <div
             className={`w-2 h-2 rounded-full shrink-0 ${
@@ -32,14 +32,17 @@ export const TaskFilters = ({
                 : status === TaskStatus.IN_PROGRESS
                   ? "bg-yellow-500"
                   : status === TaskStatus.TODO
-                    ? "bg-gray-400"
+                    ? "bg-gray-400 dark:bg-zinc-500"
                     : "bg-blue-500"
             }`}
           />
-          <span className="text-sm font-semibold text-gray-700 whitespace-nowrap">
+          <span className="text-sm font-bold text-slate-700 dark:text-zinc-300 whitespace-nowrap">
             {status ? `Status: ${status.replace("_", " ")}` : "Status: All"}
           </span>
-          <ChevronDown size={14} className="ml-auto text-gray-400" />
+          <ChevronDown
+            size={14}
+            className="ml-auto text-slate-400 dark:text-zinc-500"
+          />
         </div>
         <select
           value={status ?? ""}
@@ -52,31 +55,44 @@ export const TaskFilters = ({
           }
           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
         >
-          <option value="">Status: All</option>
-          <option value={TaskStatus.TODO}>To Do</option>
-          <option value={TaskStatus.IN_PROGRESS}>In Progress</option>
-          <option value={TaskStatus.DONE}>Done</option>
+          <option value="" className="dark:bg-zinc-900">
+            Status: All
+          </option>
+          <option value={TaskStatus.TODO} className="dark:bg-zinc-900">
+            To Do
+          </option>
+          <option value={TaskStatus.IN_PROGRESS} className="dark:bg-zinc-900">
+            In Progress
+          </option>
+          <option value={TaskStatus.DONE} className="dark:bg-zinc-900">
+            Done
+          </option>
         </select>
       </div>
 
-      {/* ===============Priority Filter=============== */}
+      {/* =============== Priority Filter =============== */}
       <div className="relative group min-w-35">
         {/* Visual Layer */}
         <div
-          className={`flex items-center gap-2 px-4 py-2 bg-white border ${
+          className={`flex items-center gap-2 px-4 py-2 bg-white dark:bg-card-main border ${
             priority
-              ? "border-orange-500 ring-1 ring-orange-100"
-              : "border-purple-100"
-          } rounded-full group-hover:bg-gray-50 transition-all shadow-sm`}
+              ? "border-orange-500 ring-1 ring-orange-100 dark:ring-orange-900/30"
+              : "border-purple-100 dark:border-slate-500"
+          } rounded-full group-hover:bg-gray-50 dark:group-hover:bg-white/5 transition-all shadow-sm`}
         >
           <Filter
             size={14}
-            className={priority ? "text-orange-500" : "text-gray-400"}
+            className={
+              priority ? "text-orange-500" : "text-slate-400 dark:text-zinc-500"
+            }
           />
-          <span className="text-sm font-semibold text-gray-700 whitespace-nowrap">
+          <span className="text-sm font-bold text-slate-700 dark:text-zinc-300 whitespace-nowrap">
             {priority ? `Priority: ${priority}` : "Priority: All"}
           </span>
-          <ChevronDown size={14} className="ml-auto text-gray-400" />
+          <ChevronDown
+            size={14}
+            className="ml-auto text-slate-400 dark:text-zinc-500"
+          />
         </div>
 
         {/* Interaction Layer */}
@@ -89,10 +105,18 @@ export const TaskFilters = ({
           }
           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
         >
-          <option value="">Priority: All</option>
-          <option value={Priority.LOW}>Low</option>
-          <option value={Priority.MEDIUM}>Medium</option>
-          <option value={Priority.HIGH}>High</option>
+          <option value="" className="dark:bg-zinc-900">
+            Priority: All
+          </option>
+          <option value={Priority.LOW} className="dark:bg-zinc-900">
+            Low
+          </option>
+          <option value={Priority.MEDIUM} className="dark:bg-zinc-900">
+            Medium
+          </option>
+          <option value={Priority.HIGH} className="dark:bg-zinc-900">
+            High
+          </option>
         </select>
       </div>
     </div>

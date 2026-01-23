@@ -8,12 +8,9 @@ import {
   Loader2,
   CheckCircle2,
   Zap,
-  Activity,
   ClipboardList,
   ListTodo,
 } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
-import Link from "next/link";
 import StatCard from "./StatCard";
 import WorkSpace from "./WorkSpace";
 import LiveTaskFeed from "./LiveTaskFeed";

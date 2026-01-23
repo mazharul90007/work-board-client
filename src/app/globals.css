@@ -15,6 +15,7 @@
   --foreground: #fafafa;
   --card-main: #18181b;
   --card-secondary: #27272a;
+  --dropdown-background: #1e293b;
   --dark-text-primary: #ffffff;
   --dark-text-secondary: #a1a1aa;
   --color-accent: #a855f7;
@@ -32,6 +33,7 @@ html.dark {
   --color-active: var(--active);
   --color-card-main: var(--card-main);
   --color-card-secondary: var(--card-secondary);
+  --color-dropdown-background: var(--dropdown-background);
   --color-dark-primary: var(--dark-text-primary);
   --color-dark-secondary: var(--dark-text-secondary);
   --font-sans: var(--font-geist-sans);

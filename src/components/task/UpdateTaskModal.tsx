@@ -74,8 +74,8 @@ export default function UpdateTaskModal({
 
   return (
     <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/60 p-4 text-slate-900">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-xl overflow-hidden animate-in fade-in zoom-in duration-200">
-        <div className="flex items-center justify-between p-6 border-b border-slate-100">
+      <div className="bg-white dark:bg-gray-50 rounded-2xl shadow-2xl w-full max-w-xl overflow-hidden animate-in fade-in zoom-in duration-200">
+        <div className="flex items-center justify-between p-6 border-b border-slate-100 dark:border-slate-200">
           <h2 className="text-xl font-bold text-slate-800">
             Edit Task Details
           </h2>

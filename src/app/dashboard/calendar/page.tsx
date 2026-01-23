@@ -23,10 +23,10 @@ export default function UnderConstruction() {
 
       {/* Text Content */}
       <div className="max-w-md space-y-4">
-        <h1 className="text-3xl font-black text-slate-800 tracking-tight">
+        <h1 className="text-3xl font-black text-slate-800 dark:text-dark-primary tracking-tight">
           Calendar is <span className="text-purple-600">Baking...</span>
         </h1>
-        <p className="text-slate-500 font-medium leading-relaxed">
+        <p className="text-slate-500 dark:text-dark-secondary font-medium leading-relaxed">
           We are currently fine-tuning the scheduling engine to help you track
           tasks effortlessly. This feature will be live very soon!
         </p>
@@ -57,7 +57,7 @@ export default function UnderConstruction() {
         </Link>
         <button
           onClick={() => window.location.reload()}
-          className="flex items-center gap-2 px-6 py-3 bg-purple-500 text-white font-bold rounded-2xl hover:bg-purple-700 transition-all shadow-lg shadow-slate-200 text-sm cursor-pointer"
+          className="flex items-center gap-2 px-6 py-3 bg-purple-500 text-white font-bold rounded-2xl hover:bg-purple-700 transition-all shadow-lg dark:shadow-sm shadow-slate-200 text-sm cursor-pointer"
         >
           <RefreshCw size={16} />
           Check for Updates

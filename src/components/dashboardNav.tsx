@@ -74,7 +74,7 @@ export default function DashboardNav() {
               className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
                 isActive
                   ? "bg-purple-200 text-purple-600 font-medium"
-                  : "text-slate-500 hover:bg-purple-100 hover:text-slate-700"
+                  : "text-slate-500 dark:text-dark-secondary hover:bg-purple-100 hover:text-slate-700"
               }`}
             >
               <item.icon

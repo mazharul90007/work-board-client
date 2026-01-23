@@ -108,11 +108,11 @@ export default function TaskList({
 
   if (tasks.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-24 bg-white rounded-2xl border border-dashed border-slate-200">
-        <div className="bg-slate-50 p-4 rounded-full mb-4">
-          <Clock className="w-8 h-8 text-slate-300" />
+      <div className="flex flex-col items-center justify-center py-24 bg-white dark:bg-card-main rounded-2xl border border-dashed border-slate-200 dark:border-slate-500">
+        <div className="bg-slate-50 dark:bg-slate-300 p-4 rounded-full mb-4">
+          <Clock className="w-8 h-8 text-slate-300 dark:text-slate-600" />
         </div>
-        <p className="text-slate-600 font-semibold text-lg">
+        <p className="text-slate-600 dark:text-dark-secondary font-semibold text-lg">
           No tasks in sight
         </p>
       </div>
@@ -123,17 +123,19 @@ export default function TaskList({
     <div>
       {/* ================Indications==================== */}
       <div className="mb-2 flex gap-2 items-center">
-        <p className="text-sm font-bold ">Priority: </p>
+        <p className="text-sm font-bold dark:text-dark-primary">Priority: </p>
         <div className="flex items-center gap-1">
-          <p className="text-xs">LOW</p>
+          <p className="text-xs dark:text-dark-secondary font-semibold">LOW</p>
           <div className="w-3 h-3 bg-green-500 rounded-full"></div>
         </div>
         <div className="flex items-center gap-1">
-          <p className="text-xs">MEDIUM</p>
+          <p className="text-xs dark:text-dark-secondary font-semibold">
+            MEDIUM
+          </p>
           <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
         </div>
         <div className="flex items-center gap-1">
-          <p className="text-xs">HIGH</p>
+          <p className="text-xs dark:text-dark-secondary font-semibold">HIGH</p>
           <div className="w-3 h-3 bg-red-500 rounded-full"></div>
         </div>
       </div>
@@ -157,7 +159,7 @@ export default function TaskList({
           return (
             <div
               key={task.id}
-              className="group flex items-center justify-between p-4 bg-white rounded-xl border border-slate-200 hover:border-purple-200 hover:shadow-sm transition-all duration-200"
+              className="group flex items-center justify-between p-4 bg-white dark:bg-card-main rounded-xl border border-slate-200 dark:border-slate-500 hover:border-purple-200 hover:shadow-sm transition-all duration-200"
             >
               {/* --- LEFT SECTION: Title & Description --- */}
               <div className="flex flex-col">
@@ -165,22 +167,22 @@ export default function TaskList({
                   <span
                     className={`h-2.5 w-2.5 rounded-full shrink-0 ${
                       task.priority === "HIGH"
-                        ? "bg-red-500"
+                        ? "bg-red-500 animate-pulse"
                         : task.priority === "MEDIUM"
-                          ? "bg-yellow-500"
-                          : "bg-green-500"
+                          ? "bg-yellow-500 animate-pulse"
+                          : "bg-green-500 animate-pulse"
                     }`}
                   />
 
                   <h3
-                    className={`font-bold text-slate-800 truncate text-sm md:text-base ${task.status === "DONE" ? "line-through text-slate-400" : ""}`}
+                    className={`font-bold text-slate-800 dark:text-dark-primary truncate text-sm md:text-base ${task.status === "DONE" ? "line-through text-slate-400" : ""}`}
                   >
                     {task.title}
                   </h3>
                 </div>
 
                 <div className="min-w-0">
-                  <p className="text-xs text-slate-500 line-clamp-1 truncate mt-0.5">
+                  <p className="text-xs text-slate-500 dark:text-dark-secondary line-clamp-1 truncate mt-0.5">
                     {task.description ?? "No description"}
                   </p>
                 </div>
@@ -199,10 +201,10 @@ export default function TaskList({
                   <span
                     className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border ${
                       task.status === "DONE"
-                        ? "bg-emerald-50 text-emerald-600 border-emerald-100"
+                        ? "bg-emerald-50 dark:bg-emerald-50/60 text-emerald-600 dark:text-emerald-800 border-emerald-100"
                         : task.status === "IN_PROGRESS"
-                          ? "bg-blue-50 text-blue-600 border-blue-100"
-                          : "bg-slate-50 text-slate-500 border-slate-100"
+                          ? "bg-blue-50 dark:bg-blue-50/60 text-blue-600 dark:text-blue-800 border-blue-100"
+                          : "bg-slate-50 dark:bg-slate-50/60 text-slate-500 dark:text-slate-800 border-slate-100"
                     }`}
                   >
                     {task.status.replace("_", " ")}
@@ -249,7 +251,7 @@ export default function TaskList({
                 </div>
 
                 <div
-                  className="relative border-l border-slate-100 pl-4"
+                  className="relative border-l border-slate-100 dark:border-slate-500 pl-4"
                   ref={openMenuId === task.id ? menuRef : null}
                 >
                   <button
@@ -263,7 +265,7 @@ export default function TaskList({
 
                   {openMenuId === task.id && (
                     <div
-                      className={`absolute right-0 mt-2 w-52 bg-white border border-slate-200 rounded-xl shadow-xl z-100 animate-in fade-in zoom-in duration-100 p-2 ${index === tasks.length - 1 && tasks.length > 2 ? "bottom-full mb-2" : "top-full mt-2"}`}
+                      className={`absolute right-0 mt-2 w-52 bg-white dark:bg-dropdown-background border border-slate-200 dark:border-slate-500 rounded-xl shadow-xl z-100 animate-in fade-in zoom-in duration-100 p-2 ${index === tasks.length - 1 && tasks.length > 2 ? "bottom-full mb-2" : "top-full mt-2"}`}
                     >
                       <div className="">
                         <div className="px-4 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 bg-purple-100 rounded">
@@ -274,7 +276,7 @@ export default function TaskList({
                           onClick={() =>
                             handleStatusUpdate(task, TaskStatus.TODO)
                           }
-                          className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 transition-colors cursor-pointer"
+                          className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-600 dark:text-dark-primary hover:bg-slate-50 dark:hover:bg-slate-600 rounded-lg transition-colors cursor-pointer"
                         >
                           <ClipboardCheck size={16} className="text-gray-500" />
                           Mark as ToDo
@@ -285,7 +287,7 @@ export default function TaskList({
                           onClick={() =>
                             handleStatusUpdate(task, TaskStatus.IN_PROGRESS)
                           }
-                          className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 transition-colors cursor-pointer"
+                          className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-600 dark:text-dark-primary hover:bg-slate-50  dark:hover:bg-slate-600 rounded-lg transition-colors cursor-pointer"
                         >
                           <RefreshCcw size={16} className="text-blue-500" />
                           In Progress
@@ -296,7 +298,7 @@ export default function TaskList({
                           onClick={() =>
                             handleStatusUpdate(task, TaskStatus.DONE)
                           }
-                          className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 transition-colors cursor-pointer"
+                          className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-600 dark:text-dark-primary hover:bg-slate-50 dark:hover:bg-slate-600 rounded-lg transition-colors cursor-pointer"
                         >
                           <CheckCircle2
                             size={16}
@@ -316,7 +318,7 @@ export default function TaskList({
                               onEdit(task);
                               setOpenMenuId(null);
                             }}
-                            className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 transition-colors cursor-pointer"
+                            className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-600 dark:text-dark-primary hover:bg-slate-50 dark:hover:bg-slate-600 rounded-lg transition-colors cursor-pointer"
                           >
                             <Pencil size={16} className="text-slate-400" />
                             Edit Details
@@ -324,7 +326,7 @@ export default function TaskList({
                           <button
                             disabled={isDeleting}
                             onClick={() => handleDelete(task.id)}
-                            className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors cursor-pointer disabled:opacity-50"
+                            className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-red-600 dark:hover:bg-red-200/30 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
                           >
                             <Trash2
                               size={16}

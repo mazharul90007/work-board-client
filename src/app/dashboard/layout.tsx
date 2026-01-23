@@ -5,7 +5,7 @@ export default function DashboardLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <div className="flex min-h-screen bg-[#F8FAFB]">
+    <div className="flex min-h-screen bg-[#F8FAFB] dark:bg-background">
       {" "}
       <aside className="w-64 border-r border-slate-200 dark:border-slate-600 hidden lg:block sticky top-0 h-screen">
         <DashboardNav />

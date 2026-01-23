@@ -29,8 +29,6 @@ const UserPage = () => {
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
-  const currentUser = useAuthStore((state) => state.user);
-
   // Function to open update modal
   const handleEditUser = (user: User) => {
     setSelectedUser(user);
@@ -65,8 +63,21 @@ const UserPage = () => {
 
   if (isLoading)
     return (
-      <div className="flex justify-center items-center h-screen bg-slate-50/50">
-        <Loader2 className="animate-spin text-purple-600" size={32} />
+      <div className="flex flex-col justify-center items-center h-[80vh] bg-white dark:bg-background transition-colors duration-500">
+        <div className="relative flex items-center justify-center">
+          {/* Outer pulse effect */}
+          <div className="absolute w-16 h-16 bg-purple-500/20 rounded-full animate-ping" />
+
+          {/* Main Spinner */}
+          <Loader2
+            className="animate-spin text-purple-600 dark:text-purple-400 z-10"
+            size={42}
+          />
+        </div>
+
+        <span className="mt-6 font-black tracking-[0.2em] text-[10px] uppercase animate-pulse text-slate-500 dark:text-zinc-500">
+          Synchronizing Real-time Data
+        </span>
       </div>
     );
 

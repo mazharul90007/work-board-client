@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetUser } from "@/src/hooks/use-users";
+import { useGetUser, useUploadProfileImage } from "@/src/hooks/use-users";
 import { useAuthStore } from "@/src/stores/useAuthStore";
 import {
   Mail,
@@ -37,7 +37,15 @@ interface StatCardProps {
 const SettingsPage = () => {
   const authUser = useAuthStore((state) => state.user);
   const { data: profile, isLoading } = useGetUser(authUser?.id ?? null);
-  console.log(profile);
+  const { mutate: uploadImage, isPending: isUploading } =
+    useUploadProfileImage();
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && profile?.id) {
+      uploadImage({ id: profile.id, file });
+    }
+  };
 
   if (isLoading) {
     return (
@@ -69,8 +77,14 @@ const SettingsPage = () => {
         <div className="h-32 md:h-44 bg-linear-to-r from-indigo-600 via-purple-600 to-pink-600" />
         <div className="px-8 pb-12">
           <div className="relative flex flex-col md:flex-row items-end gap-6 -mt-10 md:-mt-10">
+            {/* =======Profile Image with Upload======= */}
             <div className="relative group">
               <div className="w-32 h-32 rounded-4xl bg-slate-200 dark:bg-slate-800 border-4 border-white dark:border-[#020617] shadow-2xl overflow-hidden flex items-center justify-center">
+                {isUploading && (
+                  <div className="absolute inset-0 z-20 bg-black/50 flex items-center justify-center">
+                    <Loader2 className="w-8 h-8 text-white animate-spin" />
+                  </div>
+                )}
                 {profile?.profilePhoto ? (
                   <Image
                     src={profile.profilePhoto}
@@ -86,11 +100,21 @@ const SettingsPage = () => {
                   </span>
                 )}
               </div>
-              <button className="absolute bottom-2 right-2 p-2 bg-purple-600 text-white rounded-xl shadow-lg hover:scale-110 transition-transform cursor-pointer">
+
+              {/* Camera button */}
+              <label className="absolute bottom-2 right-2 p-2 bg-purple-600 text-white rounded-xl shadow-lg hover:scale-110 transition-transform cursor-pointer z-30">
                 <Camera size={16} />
-              </button>
+                <input
+                  type="file"
+                  className="hidden"
+                  accept="image/png, image/jpeg, image/jpg"
+                  onChange={handleFileChange}
+                  disabled={isUploading}
+                />
+              </label>
             </div>
 
+            {/* =====Profile Details======= */}
             <div className="flex-1 pb-2">
               <h1 className="text-3xl font-black text-slate-800 dark:text-white">
                 {profile?.name}

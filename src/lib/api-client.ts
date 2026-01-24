@@ -78,6 +78,18 @@ export const usersApi = {
     const { data } = await api.delete<ApiResponse<null, User>>(`/user/${id}`);
     return data;
   },
+
+  uploadProfileImage: async (id: string, file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const { data } = await api.patch(`/user/profile-image/${id}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return data;
+  },
 };
 
 // ===================Tasks API==============

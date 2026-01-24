@@ -94,3 +94,24 @@ export function useDeleteUser() {
     },
   });
 }
+
+// ============================Upload Profile Image======================
+export function useUploadProfileImage() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, file }: { id: string; file: File }) =>
+      usersApi.uploadProfileImage(id, file),
+
+    onSuccess: (response) => {
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+
+      toast.success(response.message || "Profile photo updated!");
+    },
+
+    onError: (error: Error) => {
+      const errorMessage = error.message || "Upload failed";
+      toast.error(errorMessage);
+    },
+  });
+}

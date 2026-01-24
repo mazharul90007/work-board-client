@@ -3,33 +3,45 @@
 **WORK BOARD SERVER** - WORK BOARD CLIENT is a task management platform created by Next.js 16. The platform supports user and assigned task management using modern frontend and backend technologies.
 
 🌐 **Frontend Live URL:** [https://workboard-client.vercel.app](https://workboard-client.vercel.app)  
-🌐 **Backend Live URL:** [https://workboard-server.vercel.app](https://workboard-server.vercel.app)  
-🌐 **Backend Github URL:** [https://github.com/mazharul90007/workboard-server](https://github.com/mazharul90007/workboard-server)  
-📚 **API Documentation:** [Postman Documentation](https://documenter.getpostman.com/view/40157327/2sB3dWsnQB)
+🌐 **Backend Live URL:** [https://workboard-server-nestjs.onrender.com](https://workboard-server-nestjs.onrender.com)  
+🌐 **Backend Github URL:** [https://github.com/mazharul90007/workboard-server-nestjs](https://github.com/mazharul90007/workboard-server-nestjs)  
+📚 **API Documentation:** [Postman Documentation](https://documenter.getpostman.com/view/40157327/2sBXVfkBth)
 
 ---
 
 ## 🚀 Features
 
-### Post Management
+### Role Based Authorization
 
-- Create Task
-- Get all Tasks
-- Get a Specific Task by Id
-- Update a Specific Task
-- Delete Task
+[MEMBER, LEADER, ADMIN, SUPER_ADMIN]
+
+### Authentication with JWT
+
+- **Create User** (ADMIN & SUPER_ADMIN)
+- **Login** (PUBLIC)
+- **Update Token** (PUBLIC)
+
+### Task Management
+
+- **Create Task** (LEADER, ADMIN, SUPER_ADMIN)
+- **Get all Tasks** (ALL LOGGEDIN USER)
+- **Get a Specific Task by Id** (ALL LOGGEDIN USER)
+- **Update a Specific Task by Id** (LEADER, ADMIN & SUPER_ADMIN)
+- **Update Task Status** (ALL LOGGEDIN USER)
+- **Delete Task** (ADMIN & SUPER_ADMIN)
 
 ### User Management
 
-- Create User
-- Get a Single User
-- Get All Users
-- Update User data (name & email)
-- Delete User
+- **Create User** (ADMIN & SUPER_ADMIN)
+- **Get a Single User** (ADMIN & SUPER_ADMIN)
+- **Get All Users** (ADMIN & SUPER_ADMIN)
+- **Update User data** (ADMIN & SUPER_ADMIN)
+- **Delete User** (ADMIN & SUPER_ADMIN)
+- **Update User Profile Photo** (ALL LOGGEDIN USER)
 
 ---
 
-## 🛠 Technology Stack
+## 🛠 Frontend Technology Stack
 
 ### Core Framework
 
@@ -39,6 +51,7 @@
 
 ### State Management & Data Fetching
 
+- **Zustand (5.0.9)** - Powerful and fast state-management library.
 - **TanStack Query (v5.90.12)** - Powerful asynchronous state management for managing server state (caching, synchronization, and updating).
 - **Axios** - Promise-based HTTP client for API requests.
 
@@ -47,7 +60,11 @@
 - **Tailwind CSS (v4)** - A utility-first CSS framework for rapid and modern UI development.
 - **Lucide React** - A library of beautiful, consistent icons.
 - **Lottie React** - Light-weight, high-quality animation library.
+
+### Notifications
+
 - **React Toastify** - Elegant notification system for success and error messages.
+- **sweetalert2** - JavaScript library for beautiful, customizable popup alerts.
 
 ### Form Handling
 
@@ -63,7 +80,7 @@
 
 Before you begin, ensure you have the following installed:
 
-- **Node.js** (v18 or higher)
+- **Node.js** (v20 or higher)
 - **npm** or **pnpm** package manager
 - **Git**
 
@@ -116,7 +133,7 @@ The server will start on `http://localhost:3000` (or your configured PORT).
 
 ### Backend API Base URL
 
-- **Production:** `https://workboard-server.vercel.app/api/v1`
+- **Production:** `https://workboard-server-nestjs.onrender.com`
 
 ---
 

@@ -30,7 +30,7 @@ const menuItems = [
     name: "Roles & Permissions",
     icon: ShieldCheck,
     href: "/dashboard/roles",
-    roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN],
+    // roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN],
   },
   { name: "Settings", icon: Settings, href: "/dashboard/settings" },
 ];

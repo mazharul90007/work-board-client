@@ -8,7 +8,7 @@ interface FailedRequest {
 }
 
 const api = axios.create({
-  baseURL: "https://workboard-server-nestjs.onrender.com",
+  baseURL: "http://localhost:5173",
   withCredentials: true,
   headers: { "Content-Type": "application/json" },
 });

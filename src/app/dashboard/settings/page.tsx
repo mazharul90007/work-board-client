@@ -19,6 +19,8 @@ import {
 import { format } from "date-fns";
 import { UserTask } from "@/src/interfaces/user.interface";
 import Image from "next/image";
+import { useState } from "react";
+import UpdateUserModal from "@/src/components/user/UpdateUserModal";
 
 // Interface for Sub-components
 interface InfoItemProps {
@@ -39,6 +41,8 @@ const SettingsPage = () => {
   const { data: profile, isLoading } = useGetUser(authUser?.id ?? null);
   const { mutate: uploadImage, isPending: isUploading } =
     useUploadProfileImage();
+
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -72,6 +76,12 @@ const SettingsPage = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-4 lg:p-8 transition-colors duration-300">
+      {/* ========Open Update User Modal======== */}
+      <UpdateUserModal
+        isOpen={isUpdateModalOpen}
+        onClose={() => setIsUpdateModalOpen(false)}
+        user={profile || null}
+      />
       {/* 1. Profile Header Card */}
       <div className="relative mb-8 bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-card-border-main rounded-[2.5rem] overflow-hidden shadow-sm">
         <div className="h-32 md:h-44 bg-linear-to-r from-indigo-600 via-purple-600 to-pink-600" />
@@ -129,7 +139,10 @@ const SettingsPage = () => {
               </div>
             </div>
 
-            <button className="mb-2 flex items-center gap-2 px-6 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:opacity-90 transition-all">
+            <button
+              onClick={() => setIsUpdateModalOpen(true)}
+              className="mb-2 flex items-center gap-2 px-6 py-3 bg-purple-600 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-purple-700 transition-all cursor-pointer"
+            >
               <Settings2 size={14} /> Update Profile
             </button>
           </div>

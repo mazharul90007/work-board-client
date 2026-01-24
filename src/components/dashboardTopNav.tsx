@@ -5,7 +5,6 @@ import {
   LogOut,
   LayoutGrid,
   ChevronRight,
-  User,
   Settings,
   ChevronDown,
 } from "lucide-react";
@@ -14,6 +13,8 @@ import ThemeToggle from "./theme-toggle";
 import { useLogout } from "../hooks/useAuth";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { useGetUser } from "../hooks/use-users";
+import Image from "next/image";
 
 export default function DashboardTopNav() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -21,6 +22,7 @@ export default function DashboardTopNav() {
 
   const user = useAuthStore((state) => state.user);
 
+  const { data: profile, isLoading } = useGetUser(user?.id ?? null);
   const { mutate: logoutMutate, isPending } = useLogout();
   const pathname = usePathname();
 
@@ -87,13 +89,27 @@ export default function DashboardTopNav() {
             {/* Trigger Avatar */}
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className={`relative w-10 h-10 rounded-2xl bg-linear-to-tr from-purple-400 to-purple-600 flex items-center justify-center text-sm font-black text-white shadow-lg shadow-purple-200 dark:shadow-none uppercase cursor-pointer transition-all duration-300 ring-offset-2 dark:ring-offset-slate-900 ${
+              className={`relative w-10 h-10 rounded-2xl flex items-center justify-center overflow-hidden shadow-lg transition-all duration-300 ring-offset-2 dark:ring-offset-slate-900 cursor-pointer ${
                 isDropdownOpen
                   ? "ring-2 ring-purple-500 scale-95"
                   : "hover:scale-105 active:scale-95"
+              } ${
+                !profile?.profilePhoto
+                  ? "bg-linear-to-tr from-purple-400 to-purple-600 text-white font-black uppercase text-sm"
+                  : ""
               }`}
             >
-              {user?.name?.charAt(0) || "U"}
+              {profile?.profilePhoto && !isLoading ? (
+                <Image
+                  src={profile.profilePhoto}
+                  alt={user?.name || "User Avatar"}
+                  fill
+                  className="object-cover"
+                  sizes="40px"
+                />
+              ) : (
+                <span>{user?.name?.charAt(0) || "U"}</span>
+              )}
 
               {/* Small Bottom-Right Arrow Badge */}
               <div

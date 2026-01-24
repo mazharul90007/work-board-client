@@ -13,8 +13,10 @@
 .dark {
   --background: #09090b;
   --foreground: #fafafa;
-  --card-main: #18181b;
-  --card-secondary: #27272a;
+  --card-main: #0f172a80;
+  --card-secondary: #ffffff0d;
+  --card-border-main: #ffffff0d;
+  --card-border-secondary: #ffffff33;
   --dropdown-background: #1e293b;
   --dark-text-primary: #ffffff;
   --dark-text-secondary: #a1a1aa;
@@ -33,6 +35,8 @@ html.dark {
   --color-active: var(--active);
   --color-card-main: var(--card-main);
   --color-card-secondary: var(--card-secondary);
+  --color-card-border-main: var(--card-border-main);
+  --color-card-border-secondary: var(--card-border-secondary);
   --color-dropdown-background: var(--dropdown-background);
   --color-dark-primary: var(--dark-text-primary);
   --color-dark-secondary: var(--dark-text-secondary);

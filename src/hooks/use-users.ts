@@ -49,14 +49,15 @@ export function useCreateUser() {
   });
 }
 
-// =====================Get single user by ID===================
-// export function useUser(id: string | null) {
-//   return useQuery({
-//     queryKey: ["user", id],
-//     queryFn: () => usersApi.getById(id!),
-//     enabled: !!id,
-//   });
-// }
+//=====================Get single user by ID===================
+export function useGetUser(id: string | null) {
+  return useQuery({
+    queryKey: ["user", id],
+    queryFn: () => usersApi.getSingleUser(id as string),
+    enabled: !!id,
+    staleTime: 1000 * 60 * 5,
+  });
+}
 
 // ==========================Update user=================
 export function useUpdateUser() {

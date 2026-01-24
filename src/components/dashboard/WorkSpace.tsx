@@ -27,7 +27,7 @@ const WorkSpace = ({ tasks, users }: WorkSpaceProps) => {
   const completionRate =
     totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
   return (
-    <div className="lg:col-span-8 bg-white dark:bg-card-main p-8 rounded-4xl border border-slate-100 dark:border-slate-600 shadow-sm dark:shadow-slate-500 relative overflow-hidden flex flex-col">
+    <div className="lg:col-span-8 bg-white dark:bg-card-main p-8 rounded-4xl border border-slate-100 dark:border-card-border-main shadow-sm dark:shadow-slate-500 relative overflow-hidden flex flex-col">
       {/* Decorative Background Glow */}
       <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64  dark:bg-purple-600/20 rounded-full blur-3xl" />
 
@@ -90,10 +90,10 @@ const WorkSpace = ({ tasks, users }: WorkSpaceProps) => {
         <div className="flex-1 w-full space-y-6">
           <div className="flex justify-between items-start">
             <div className="space-y-1">
-              <h2 className="text-2xl font-black text-slate-900 tracking-tight">
+              <h2 className="text-2xl font-black text-slate-900 dark:text-dark-primary tracking-tight">
                 Priority Intelligence
               </h2>
-              <p className="text-slate-400 text-sm font-medium">
+              <p className="text-slate-400 dark:text-dark-secondary text-sm font-medium">
                 Distribution across active workloads
               </p>
             </div>

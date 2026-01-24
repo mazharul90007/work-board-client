@@ -119,7 +119,7 @@ const MemberTaskPage = () => {
       <TaskList tasks={tasks} onEdit={handleEdit} />
 
       {/* Pagination */}
-      <div className="pt-4 border-t border-gray-100 dark:border-slate-500">
+      <div className="pt-4 border-t border-gray-100 dark:border-slate-700">
         {meta && (
           <Pagination
             page={meta.page}

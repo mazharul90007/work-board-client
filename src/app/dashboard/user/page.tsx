@@ -11,7 +11,6 @@ import {
 import { Loader2, Search, PlusCircle, RefreshCcw } from "lucide-react";
 import UserViewToggle from "@/src/components/user/userViewToggle";
 import UserFilter from "@/src/components/user/userFilters";
-import { useAuthStore } from "@/src/stores/useAuthStore";
 import UserList from "@/src/components/user/userList";
 import Pagination from "@/src/components/pagination";
 import CreateUserModal from "@/src/components/user/CreateUserModal";
@@ -129,7 +128,7 @@ const UserPage = () => {
       </div>
 
       {/* --- TABS SECTION --- */}
-      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 bg-white dark:bg-card-main p-4 mb-4 rounded-xl border border-gray-200 dark:border-slate-600 shadow-sm">
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 bg-white dark:bg-card-main p-4 mb-4 rounded-xl border dark:border-card-border-secondary border-slate-200 shadow-sm">
         <UserViewToggle view={view} onChange={setView} />
 
         <div className="flex items-center gap-3 w-full sm:w-auto">
@@ -166,7 +165,7 @@ const UserPage = () => {
       />
 
       {/* Pagination */}
-      <div className="pt-4 border-t border-gray-100 dark:border-slate-500 mt-6">
+      <div className="pt-4 border-t border-gray-100 dark:border-slate-700 mt-6">
         {meta && (
           <Pagination
             page={meta.page}

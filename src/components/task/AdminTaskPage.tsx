@@ -123,7 +123,7 @@ const AdminTaskPage = () => {
       </div>
 
       {/* Toolbar */}
-      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 bg-white dark:bg-card-main p-4 mb-4 rounded-xl border border-gray-200 dark:border-slate-600 shadow-sm">
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 bg-white dark:bg-card-main p-4 mb-6 rounded-xl border border-gray-200 dark:border-card-border-secondary shadow-sm">
         <TaskViewToggle view={view} onChange={setView} />
 
         <div className="flex items-center gap-3 w-full sm:w-auto">
@@ -147,7 +147,7 @@ const AdminTaskPage = () => {
       <TaskList tasks={tasks} onEdit={handleEdit} />
 
       {/* Pagination */}
-      <div className="pt-4 border-t border-gray-100 dark:border-slate-500">
+      <div className="pt-4 border-t border-gray-100 dark:border-slate-700">
         {meta && (
           <Pagination
             page={meta.page}

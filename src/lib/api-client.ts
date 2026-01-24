@@ -60,11 +60,11 @@ export const usersApi = {
     return { data: response.data.data, meta: response.data.meta! };
   },
 
-  // getById: async (id: string): Promise<User> => {
-  //   const { data } = await api.get<ApiResponse<User>>(`/user/${id}`);
+  getSingleUser: async (id: string): Promise<User> => {
+    const response = await api.get<ApiResponse<null, User>>(`/user/${id}`);
 
-  //   return data.data;
-  // },
+    return response.data.data;
+  },
 
   updateUser: async (id: string, input: UpdateUserInput) => {
     const { data } = await api.patch<ApiResponse<null, User>>(

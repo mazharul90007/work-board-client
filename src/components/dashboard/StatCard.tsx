@@ -18,7 +18,7 @@ const StatCard = ({
   circleColor,
 }: StatCardProps) => {
   return (
-    <div className="bg-white dark:bg-card-main p-6 rounded-2xl border border-slate-100 dark:border-slate-600 shadow-sm dark:shadow-slate-600 hover:shadow-lg dark:hover:shadow-sm transition-all duration-300 group overflow-hidden relative">
+    <div className="bg-white dark:bg-card-main p-6 rounded-2xl border border-slate-100 dark:border-card-border-main shadow-sm dark:shadow-slate-600 hover:shadow-lg dark:hover:shadow-sm transition-all duration-300 group overflow-hidden relative">
       <div
         className={`absolute -right-8 -top-8 w-24 h-24 ${circleColor} rounded-full opacity-50 group-hover:scale-[10] transition-transform duration-700`}
       />

@@ -108,7 +108,7 @@ export default function TaskList({
 
   if (tasks.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-24 bg-white dark:bg-card-main rounded-2xl border border-dashed border-slate-200 dark:border-slate-500">
+      <div className="flex flex-col items-center justify-center py-24 bg-white dark:bg-card-main rounded-2xl border border-dashed border-slate-400 dark:border-card-border-secondary">
         <div className="bg-slate-50 dark:bg-slate-300 p-4 rounded-full mb-4">
           <Clock className="w-8 h-8 text-slate-300 dark:text-slate-600" />
         </div>
@@ -159,7 +159,7 @@ export default function TaskList({
           return (
             <div
               key={task.id}
-              className="group flex items-center justify-between p-4 bg-white dark:bg-card-main rounded-xl border border-slate-200 dark:border-slate-500 hover:border-purple-200 hover:shadow-sm transition-all duration-200"
+              className="group flex items-center justify-between p-4 bg-white dark:bg-card-main rounded-xl border border-slate-200 dark:border-card-border-main hover:border-purple-200 hover:shadow-sm transition-all duration-200"
             >
               {/* --- LEFT SECTION: Title & Description --- */}
               <div className="flex flex-col">

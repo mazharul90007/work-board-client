@@ -1,3 +1,5 @@
+import { Priority, TaskStatus } from "./task.interface";
+
 export enum UserRole {
   MEMBER = "MEMBER",
   LEADER = "LEADER",
@@ -11,6 +13,14 @@ export enum UserStatus {
   DELETED = "DELETED",
 }
 
+export interface UserTask {
+  id?: string;
+  title?: string;
+  description?: string;
+  status?: TaskStatus;
+  priority?: Priority;
+}
+
 export interface User {
   id: string;
   memberId: string;
@@ -21,6 +31,8 @@ export interface User {
   role: UserRole;
   status: string;
   createdAt: string;
+  updatedAt?: string;
+  tasks?: UserTask[];
 }
 
 export interface CreateUserInput {

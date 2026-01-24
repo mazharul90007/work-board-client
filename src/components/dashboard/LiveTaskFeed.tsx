@@ -6,7 +6,7 @@ import Link from "next/link";
 const LiveTaskFeed = ({ tasks }: { tasks: Task[] }) => {
   const hasTasks = tasks && tasks.length > 0;
   return (
-    <div className="lg:col-span-4 bg-white dark:bg-white/3 p-6 rounded-3xl border border-slate-100 dark:border-slate-600  shadow-sm dark:shadow-slate-500 flex flex-col">
+    <div className="lg:col-span-4 bg-white dark:bg-card-main p-6 rounded-3xl border border-slate-100 dark:border-card-border-main  shadow-sm dark:shadow-slate-500 flex flex-col">
       <div className="flex justify-between items-center mb-8">
         <h2 className="text-xl font-black text-slate-800 dark:text-dark-primary">
           Live Feed

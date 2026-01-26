@@ -83,7 +83,7 @@ const SettingsPage = () => {
         user={profile || null}
       />
       {/* 1. Profile Header Card */}
-      <div className="relative mb-8 bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-card-border-main rounded-[2.5rem] overflow-hidden shadow-sm">
+      <div className="relative mb-8 bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-card-border-main rounded-2xl overflow-hidden shadow-sm">
         <div className="h-24 md:h-44 bg-linear-to-r from-indigo-600 via-purple-600 to-pink-600" />
         <div className="px-4 md:px-8 pb-6 md:pb-12">
           <div className="relative flex items-end gap-6 -mt-10 md:-mt-10">
@@ -154,7 +154,7 @@ const SettingsPage = () => {
         {/* =============== Left Column: Personal Data =============== */}
         <div className="lg:col-span-7 space-y-6">
           {/* Detailed Information */}
-          <div className="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-card-border-main rounded-[2.5rem] p-8 shadow-sm">
+          <div className="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-card-border-main rounded-2xl p-8 shadow-sm">
             <h3 className="text-sm font-black uppercase tracking-[0.2em] text-slate-400 dark:text-zinc-500 mb-8">
               Detailed Information
             </h3>
@@ -189,7 +189,7 @@ const SettingsPage = () => {
           </div>
 
           {/*  My Tasks Section */}
-          <div className="bg-white dark:bg-card-main border border-slate-200 dark:border-card-border-main rounded-[2.5rem] p-8 shadow-sm">
+          <div className="bg-white dark:bg-card-main border border-slate-200 dark:border-card-border-main rounded-2xl p-8 shadow-sm">
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-sm font-black uppercase tracking-[0.2em] text-slate-400 dark:text-zinc-500">
                 My Tasks
@@ -230,7 +230,7 @@ const SettingsPage = () => {
 
         {/* ================== Right Column: WorkLoad Summary ============ */}
         <div className="lg:col-span-5 space-y-6">
-          <div className="bg-white dark:bg-card-main p-8 rounded-[2.5rem] border border-slate-200 dark:border-card-border-main shadow-sm">
+          <div className="bg-white dark:bg-card-main p-8 rounded-2xl border border-slate-200 dark:border-card-border-main shadow-sm">
             <h3 className="text-xs font-black uppercase tracking-[0.2em] opacity-60 mb-8">
               Workload Summary
             </h3>
@@ -279,7 +279,7 @@ const InfoItem = ({ label, value, icon, isStatus }: InfoItemProps) => (
 );
 
 const StatCard = ({ label, count, icon }: StatCardProps) => (
-  <div className="bg-slate-50 dark:bg-card-secondary backdrop-blur-md p-4 rounded-3xl border border-slate-100 dark:border-card-border-main shadow-sm">
+  <div className="bg-slate-50 dark:bg-card-secondary backdrop-blur-md p-4 rounded-2xl border border-slate-100 dark:border-card-border-main shadow-sm">
     <div className="mb-2 opacity-80">{icon}</div>
     <p className="text-2xl font-black">{count}</p>
     <p className="text-[10px] font-bold uppercase tracking-widest opacity-60">

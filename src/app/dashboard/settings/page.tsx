@@ -75,7 +75,7 @@ const SettingsPage = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-4 lg:p-8 transition-colors duration-300">
+    <div className="max-w-6xl mx-auto transition-colors duration-300">
       {/* ========Open Update User Modal======== */}
       <UpdateUserModal
         isOpen={isUpdateModalOpen}
@@ -84,12 +84,12 @@ const SettingsPage = () => {
       />
       {/* 1. Profile Header Card */}
       <div className="relative mb-8 bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-card-border-main rounded-[2.5rem] overflow-hidden shadow-sm">
-        <div className="h-32 md:h-44 bg-linear-to-r from-indigo-600 via-purple-600 to-pink-600" />
-        <div className="px-8 pb-12">
-          <div className="relative flex flex-col md:flex-row items-end gap-6 -mt-10 md:-mt-10">
+        <div className="h-24 md:h-44 bg-linear-to-r from-indigo-600 via-purple-600 to-pink-600" />
+        <div className="px-4 md:px-8 pb-6 md:pb-12">
+          <div className="relative flex items-end gap-6 -mt-10 md:-mt-10">
             {/* =======Profile Image with Upload======= */}
             <div className="relative group">
-              <div className="w-32 h-32 rounded-4xl bg-slate-200 dark:bg-slate-800 border-4 border-white dark:border-[#020617] shadow-2xl overflow-hidden flex items-center justify-center">
+              <div className="w-24 md:w-32 h-24 md:h-32 rounded-4xl bg-slate-200 dark:bg-slate-800 border-4 border-white dark:border-[#020617] shadow-2xl overflow-hidden flex items-center justify-center">
                 {isUploading && (
                   <div className="absolute inset-0 z-20 bg-black/50 flex items-center justify-center">
                     <Loader2 className="w-8 h-8 text-white animate-spin" />
@@ -125,11 +125,11 @@ const SettingsPage = () => {
             </div>
 
             {/* =====Profile Details======= */}
-            <div className="flex-1 pb-2">
-              <h1 className="text-3xl font-black text-slate-800 dark:text-white">
+            <div className="flex-1 pb-2 space-y-2">
+              <h1 className="text-2xl md:text-3xl font-black text-slate-800 dark:text-white">
                 {profile?.name}
               </h1>
-              <div className="flex flex-wrap items-center gap-3 mt-2">
+              <div className="flex flex-wrap items-center gap-3">
                 <span className="px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-600 dark:text-purple-400 text-[10px] font-black uppercase tracking-widest">
                   {profile?.role}
                 </span>
@@ -141,9 +141,10 @@ const SettingsPage = () => {
 
             <button
               onClick={() => setIsUpdateModalOpen(true)}
-              className="mb-2 flex items-center gap-2 px-6 py-3 bg-purple-600 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-purple-700 transition-all cursor-pointer"
+              className="mb-2 flex items-center gap-2 px-3 md:px-6 py-1.5 md:py-3 bg-purple-600 text-white rounded-lg md:rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-purple-700 transition-all cursor-pointer"
             >
-              <Settings2 size={14} /> Update Profile
+              <Settings2 size={14} />{" "}
+              <span className="hidden md:block">Update Profile</span>
             </button>
           </div>
         </div>

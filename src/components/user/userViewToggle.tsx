@@ -19,7 +19,7 @@ export default function UserViewToggle({
         <button
           key={option.id}
           onClick={() => onChange(option.id)}
-          className={`px-4 py-1.5 text-xs font-bold rounded-lg  transition-all duration-300 cursor-pointer  ${
+          className={`px-2 md:px-4 py-1.5 text-xs font-bold rounded-lg  transition-all duration-300 cursor-pointer  ${
             view === option.id
               ? "bg-purple-500 dark:bg-purple-700 text-white dark:text-dark-primary shadow-sm"
               : "text-gray-700 dark:text-gray-800 hover:text-gray-700 hover:bg-purple-200"

@@ -159,10 +159,10 @@ export default function TaskList({
           return (
             <div
               key={task.id}
-              className="group flex items-center justify-between p-4 bg-white dark:bg-card-main rounded-xl border border-slate-200 dark:border-card-border-main hover:border-purple-200 hover:shadow-sm transition-all duration-200"
+              className="flex flex-col md:flex-row md:items-center justify-between p-4 bg-white dark:bg-card-main rounded-xl border border-slate-200 dark:border-card-border-main hover:border-purple-200 hover:shadow-sm transition-all duration-200 space-y-3 md:space-y-0"
             >
               {/* --- LEFT SECTION: Title & Description --- */}
-              <div className="flex flex-col">
+              <div className="flex flex-col justify-start">
                 <div className="flex items-center gap-2">
                   <span
                     className={`h-2.5 w-2.5 rounded-full shrink-0 ${
@@ -189,157 +189,168 @@ export default function TaskList({
               </div>
 
               {/* ============= RIGHT SECTION: Metadata & Dropdown ============ */}
-              <div className="flex items-center gap-4 md:gap-6">
-                <div
-                  className={`hidden lg:flex items-center gap-1.5 text-xs font-medium ${isOverdue ? "text-red-500" : "text-slate-400"}`}
-                >
-                  <Calendar size={14} />
-                  <span>{formattedDate}</span>
-                </div>
-
-                <div className="hidden md:block">
-                  <span
-                    className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border ${
-                      task.status === "DONE"
-                        ? "bg-emerald-50 dark:bg-emerald-50/60 text-emerald-600 dark:text-emerald-800 border-emerald-100"
-                        : task.status === "IN_PROGRESS"
-                          ? "bg-blue-50 dark:bg-blue-50/60 text-blue-600 dark:text-blue-800 border-blue-100"
-                          : "bg-slate-50 dark:bg-slate-50/60 text-slate-500 dark:text-slate-800 border-slate-100"
-                    }`}
-                  >
-                    {task.status.replace("_", " ")}
-                  </span>
-                </div>
-
-                <div className="flex items-center -space-x-2">
+              <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-4">
+                {/* ======Date and Status====== */}
+                <div className="flex justify-between md:gap-6">
+                  {/* Date */}
                   <div
-                    title={`By: ${assignedByName}`}
-                    className="w-8 h-8 rounded-full border-2 border-white bg-slate-100 overflow-hidden relative shadow-sm"
+                    className={`flex items-center gap-1.5 text-xs font-medium shrink-0 ${isOverdue ? "text-red-500" : "text-slate-400"}`}
                   >
-                    {task.assignedBy?.profilePhoto ? (
-                      <Image
-                        src={task.assignedBy.profilePhoto}
-                        alt={assignedByName}
-                        fill
-                        className="object-cover"
-                        sizes="32px"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-[10px] bg-slate-200 text-slate-600 font-bold">
-                        {assignedByName.charAt(0)}
-                      </div>
-                    )}
+                    <Calendar size={14} />
+                    <span>{formattedDate}</span>
                   </div>
-                  <div
-                    title={`To: ${assignedToName}`}
-                    className="w-8 h-8 rounded-full border-2 border-white bg-purple-100 overflow-hidden relative z-10 shadow-sm"
-                  >
-                    {task.assignedTo?.profilePhoto ? (
-                      <Image
-                        src={task.assignedTo.profilePhoto}
-                        alt={assignedToName}
-                        fill
-                        className="object-cover"
-                        sizes="32px"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-[10px] bg-purple-200 text-purple-600 font-bold">
-                        {assignedToName.charAt(0)}
-                      </div>
-                    )}
-                  </div>
-                </div>
 
-                <div
-                  className="relative border-l border-slate-100 dark:border-slate-500 pl-4"
-                  ref={openMenuId === task.id ? menuRef : null}
-                >
-                  <button
-                    onClick={() =>
-                      setOpenMenuId(openMenuId === task.id ? null : task.id)
-                    }
-                    className="p-2 hover:bg-slate-100 text-slate-400 hover:text-slate-600 rounded-lg transition-colors"
-                  >
-                    <MoreHorizontal size={18} />
-                  </button>
-
-                  {openMenuId === task.id && (
-                    <div
-                      className={`absolute right-0 mt-2 w-52 bg-white dark:bg-dropdown-background border border-slate-200 dark:border-slate-500 rounded-xl shadow-xl z-100 animate-in fade-in zoom-in duration-100 p-2 ${index === tasks.length - 1 && tasks.length > 2 ? "bottom-full mb-2" : "top-full mt-2"}`}
+                  {/* Status Badge */}
+                  <div className="shrink-0">
+                    <span
+                      className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border ${
+                        task.status === "DONE"
+                          ? "bg-emerald-50 dark:bg-emerald-50/60 text-emerald-600 dark:text-emerald-800 border-emerald-100"
+                          : task.status === "IN_PROGRESS"
+                            ? "bg-blue-50 dark:bg-blue-50/60 text-blue-600 dark:text-blue-800 border-blue-100"
+                            : "bg-slate-50 dark:bg-slate-50/60 text-slate-500 dark:text-slate-800 border-slate-100"
+                      }`}
                     >
-                      <div className="">
-                        <div className="px-4 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 bg-purple-100 rounded">
-                          Task Status
-                        </div>
-                        {/* status ToDo button */}
-                        <button
-                          onClick={() =>
-                            handleStatusUpdate(task, TaskStatus.TODO)
-                          }
-                          className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-600 dark:text-dark-primary hover:bg-slate-50 dark:hover:bg-slate-600 rounded-lg transition-colors cursor-pointer"
-                        >
-                          <ClipboardCheck size={16} className="text-gray-500" />
-                          Mark as ToDo
-                        </button>
+                      {task.status.replace("_", " ")}
+                    </span>
+                  </div>
+                </div>
 
-                        {/* status In progress button */}
-                        <button
-                          onClick={() =>
-                            handleStatusUpdate(task, TaskStatus.IN_PROGRESS)
-                          }
-                          className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-600 dark:text-dark-primary hover:bg-slate-50  dark:hover:bg-slate-600 rounded-lg transition-colors cursor-pointer"
-                        >
-                          <RefreshCcw size={16} className="text-blue-500" />
-                          In Progress
-                        </button>
-
-                        {/* status Done button */}
-                        <button
-                          onClick={() =>
-                            handleStatusUpdate(task, TaskStatus.DONE)
-                          }
-                          className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-600 dark:text-dark-primary hover:bg-slate-50 dark:hover:bg-slate-600 rounded-lg transition-colors cursor-pointer"
-                        >
-                          <CheckCircle2
-                            size={16}
-                            className="text-emerald-500"
-                          />
-                          Mark as Done
-                        </button>
-                      </div>
-
-                      {canManage && (
-                        <div className="mt-1">
-                          <div className="px-4 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 bg-purple-100 rounded">
-                            Manage
-                          </div>
-                          <button
-                            onClick={() => {
-                              onEdit(task);
-                              setOpenMenuId(null);
-                            }}
-                            className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-600 dark:text-dark-primary hover:bg-slate-50 dark:hover:bg-slate-600 rounded-lg transition-colors cursor-pointer"
-                          >
-                            <Pencil size={16} className="text-slate-400" />
-                            Edit Details
-                          </button>
-                          <button
-                            disabled={isDeleting}
-                            onClick={() => handleDelete(task.id)}
-                            className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-red-600 dark:hover:bg-red-200/30 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
-                          >
-                            <Trash2
-                              size={16}
-                              className={
-                                isDeleting ? "animate-pulse" : "text-red-400"
-                              }
-                            />
-                            {isDeleting ? "Deleting..." : "Delete Task"}
-                          </button>
+                {/* User and Action Buttons */}
+                <div className="flex items-center justify-between md:gap-4">
+                  <div className="flex items-center -space-x-2">
+                    <div
+                      title={`By: ${assignedByName}`}
+                      className="w-8 h-8 rounded-full border-2 border-white bg-slate-100 overflow-hidden relative shadow-sm"
+                    >
+                      {task.assignedBy?.profilePhoto ? (
+                        <Image
+                          src={task.assignedBy.profilePhoto}
+                          alt={assignedByName}
+                          fill
+                          className="object-cover"
+                          sizes="32px"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-[10px] bg-slate-200 text-slate-600 font-bold">
+                          {assignedByName.charAt(0)}
                         </div>
                       )}
                     </div>
-                  )}
+                    <div
+                      title={`To: ${assignedToName}`}
+                      className="w-8 h-8 rounded-full border-2 border-white bg-purple-100 overflow-hidden relative z-10 shadow-sm"
+                    >
+                      {task.assignedTo?.profilePhoto ? (
+                        <Image
+                          src={task.assignedTo.profilePhoto}
+                          alt={assignedToName}
+                          fill
+                          className="object-cover"
+                          sizes="32px"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-[10px] bg-purple-200 text-purple-600 font-bold">
+                          {assignedToName.charAt(0)}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div
+                    className="relative border-l border-slate-100 dark:border-slate-500 pl-4"
+                    ref={openMenuId === task.id ? menuRef : null}
+                  >
+                    <button
+                      onClick={() =>
+                        setOpenMenuId(openMenuId === task.id ? null : task.id)
+                      }
+                      className="p-2 hover:bg-slate-100 text-slate-400 hover:text-slate-600 rounded-lg transition-colors"
+                    >
+                      <MoreHorizontal size={18} />
+                    </button>
+
+                    {openMenuId === task.id && (
+                      <div
+                        className={`absolute right-0 mt-2 w-52 bg-white dark:bg-dropdown-background border border-slate-200 dark:border-slate-500 rounded-xl shadow-xl z-100 animate-in fade-in zoom-in duration-100 p-2 ${index === tasks.length - 1 && tasks.length > 2 ? "bottom-full mb-2" : "top-full mt-2"}`}
+                      >
+                        <div className="">
+                          <div className="px-4 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 bg-purple-100 rounded">
+                            Task Status
+                          </div>
+                          {/* status ToDo button */}
+                          <button
+                            onClick={() =>
+                              handleStatusUpdate(task, TaskStatus.TODO)
+                            }
+                            className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-600 dark:text-dark-primary hover:bg-slate-50 dark:hover:bg-slate-600 rounded-lg transition-colors cursor-pointer"
+                          >
+                            <ClipboardCheck
+                              size={16}
+                              className="text-gray-500"
+                            />
+                            Mark as ToDo
+                          </button>
+
+                          {/* status In progress button */}
+                          <button
+                            onClick={() =>
+                              handleStatusUpdate(task, TaskStatus.IN_PROGRESS)
+                            }
+                            className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-600 dark:text-dark-primary hover:bg-slate-50  dark:hover:bg-slate-600 rounded-lg transition-colors cursor-pointer"
+                          >
+                            <RefreshCcw size={16} className="text-blue-500" />
+                            In Progress
+                          </button>
+
+                          {/* status Done button */}
+                          <button
+                            onClick={() =>
+                              handleStatusUpdate(task, TaskStatus.DONE)
+                            }
+                            className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-600 dark:text-dark-primary hover:bg-slate-50 dark:hover:bg-slate-600 rounded-lg transition-colors cursor-pointer"
+                          >
+                            <CheckCircle2
+                              size={16}
+                              className="text-emerald-500"
+                            />
+                            Mark as Done
+                          </button>
+                        </div>
+
+                        {canManage && (
+                          <div className="mt-1">
+                            <div className="px-4 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 bg-purple-100 rounded">
+                              Manage
+                            </div>
+                            <button
+                              onClick={() => {
+                                onEdit(task);
+                                setOpenMenuId(null);
+                              }}
+                              className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-600 dark:text-dark-primary hover:bg-slate-50 dark:hover:bg-slate-600 rounded-lg transition-colors cursor-pointer"
+                            >
+                              <Pencil size={16} className="text-slate-400" />
+                              Edit Details
+                            </button>
+                            <button
+                              disabled={isDeleting}
+                              onClick={() => handleDelete(task.id)}
+                              className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-red-600 dark:hover:bg-red-200/30 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
+                            >
+                              <Trash2
+                                size={16}
+                                className={
+                                  isDeleting ? "animate-pulse" : "text-red-400"
+                                }
+                              />
+                              {isDeleting ? "Deleting..." : "Delete Task"}
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

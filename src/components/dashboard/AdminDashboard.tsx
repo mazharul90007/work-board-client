@@ -60,7 +60,7 @@ const AdminDashboard = () => {
     );
 
   return (
-    <div className="p-6 lg:p-10 space-y-6 bg-white/80 dark:bg-background min-h-screen">
+    <div className="space-y-6 min-h-screen">
       {/* --- PREMIUM HEADER --- */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>

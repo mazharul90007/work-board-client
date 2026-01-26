@@ -15,7 +15,7 @@ export const TaskFilters = ({
   onPriorityChange,
 }: TaskFiltersProps) => {
   return (
-    <div className="flex flex-wrap items-center gap-3">
+    <div className="flex flex-wrap items-center gap-2 md:gap-3">
       {/* ================== Status Filter ===================== */}
       <div className="relative group min-w-35">
         <div

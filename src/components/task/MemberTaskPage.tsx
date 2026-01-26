@@ -83,7 +83,7 @@ const MemberTaskPage = () => {
     setIsUpdateModalOpen(true);
   };
   return (
-    <div className="p-8 min-h-screen bg-[#F8FAFC] dark:bg-background space-y-6">
+    <div className="space-y-6">
       {/* Header Section */}
       <div>
         <h1 className="text-4xl font-black text-slate-900 dark:text-slate-100 tracking-tight">

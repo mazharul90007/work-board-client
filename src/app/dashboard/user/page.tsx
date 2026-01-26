@@ -88,7 +88,7 @@ const UserPage = () => {
     );
 
   return (
-    <div className="p-8 min-h-screen bg-[#F8FAFC] dark:bg-background">
+    <div className="">
       {/* --- HEADER SECTION --- */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
@@ -100,7 +100,7 @@ const UserPage = () => {
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-col-reverse md:flex-row items-start md:items-center gap-3">
           {/* Search Bar */}
           <div className="relative group">
             <Search
@@ -128,7 +128,7 @@ const UserPage = () => {
       </div>
 
       {/* --- TABS SECTION --- */}
-      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 bg-white dark:bg-card-main p-4 mb-4 rounded-xl border dark:border-card-border-secondary border-slate-200 shadow-sm">
+      <div className="flex flex-col sm:flex-row justify-between items-start md:items-center gap-4 bg-white dark:bg-card-main p-4 mb-4 rounded-xl border dark:border-card-border-secondary border-slate-200 shadow-sm">
         <UserViewToggle view={view} onChange={setView} />
 
         <div className="flex items-center gap-3 w-full sm:w-auto">

@@ -15,8 +15,11 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useGetUser } from "../hooks/use-users";
 import Image from "next/image";
+import { AnimatePresence, motion } from "framer-motion";
+import DashboardNav from "./dashboardNav";
 
 export default function DashboardTopNav() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -44,104 +47,113 @@ export default function DashboardTopNav() {
   }, []);
 
   return (
-    <header
-      className={`h-18 border-b border-slate-100 dark:border-slate-600 bg-white dark:bg-zinc-800 backdrop-blur-md px-8 flex items-center justify-between sticky top-0 z-50`}
-    >
-      {/* LEFT SIDE: Breadcrumbs */}
-      <div className="flex items-center gap-4">
-        <div className="hidden md:flex items-center gap-2">
-          <div className="p-2 bg-purple-50 dark:bg-purple-900/20 rounded-xl text-purple-600">
-            <LayoutGrid size={20} />
+    <>
+      <header
+        className={`h-18 border-b border-slate-100 dark:border-slate-600 bg-white dark:bg-zinc-800 backdrop-blur-md px-8 flex items-center justify-between sticky top-0 z-50`}
+      >
+        {/* LEFT SIDE: Breadcrumbs */}
+        <div className="flex items-center gap-4">
+          {/* MOBILE MENU BUTTON - Add this here! */}
+          <button
+            onClick={() => setIsMobileMenuOpen(true)}
+            className="lg:hidden p-2 bg-purple-50 dark:bg-purple-900/20 rounded-xl text-purple-600 transition-transform active:scale-95"
+          >
+            <LayoutGrid size={22} />{" "}
+          </button>
+
+          <div className="hidden md:flex items-center gap-2">
+            <div className="p-2 bg-purple-50 dark:bg-purple-900/20 rounded-xl text-purple-600">
+              <LayoutGrid size={20} />
+            </div>
+            <nav className="flex items-center gap-2 text-sm">
+              <span className={` text-slate-400 dark:text-white font-medium`}>
+                Workboard
+              </span>
+              <ChevronRight size={14} className="text-slate-300" />
+              <span
+                className={`text-slate-900 dark:text-slate-100 font-black capitalize tracking-tight`}
+              >
+                {currentPage.replace("-", " ")}
+              </span>
+            </nav>
           </div>
-          <nav className="flex items-center gap-2 text-sm">
-            <span className={` text-slate-400 dark:text-white font-medium`}>
-              Workboard
-            </span>
-            <ChevronRight size={14} className="text-slate-300" />
-            <span
-              className={`text-slate-900 dark:text-slate-100 font-black capitalize tracking-tight`}
-            >
-              {currentPage.replace("-", " ")}
-            </span>
-          </nav>
-        </div>
-      </div>
-
-      {/* RIGHT SIDE */}
-      <div className="flex items-center gap-6">
-        <div className="flex items-center pr-2">
-          <ThemeToggle />
         </div>
 
-        <div
-          className={`flex items-center gap-4 pl-6 border-l border-slate-200  dark:border-slate-500`}
-        >
-          <div className="hidden sm:flex flex-col items-end">
-            <span className="text-[13px] font-black text-slate-800 dark:text-slate-100 tracking-tight leading-none uppercase">
-              {user?.name || "User"}
-            </span>
-            <span className="text-[9px] font-black text-purple-500 dark:text-purple-300 uppercase tracking-[0.15em] mt-1 bg-purple-50 dark:bg-purple-200/10 px-1.5 py-0.5 rounded-md">
-              {user?.role || "Member"}
-            </span>
+        {/* RIGHT SIDE */}
+        <div className="flex items-center gap-6">
+          <div className="flex items-center pr-2">
+            <ThemeToggle />
           </div>
 
-          <div className="relative" ref={dropdownRef}>
-            {/* Trigger Avatar */}
-            <button
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className={`relative w-10 h-10 rounded-2xl flex items-center justify-center overflow-hidden shadow-lg transition-all duration-300 ring-offset-2 dark:ring-offset-slate-900 cursor-pointer ${
-                isDropdownOpen
-                  ? "ring-2 ring-purple-500 scale-95"
-                  : "hover:scale-105 active:scale-95"
-              } ${
-                !profile?.profilePhoto
-                  ? "bg-linear-to-tr from-purple-400 to-purple-600 text-white font-black uppercase text-sm"
-                  : ""
-              }`}
-            >
-              {profile?.profilePhoto && !isLoading ? (
-                <Image
-                  src={profile.profilePhoto}
-                  alt={user?.name || "User Avatar"}
-                  fill
-                  className="object-cover"
-                  sizes="40px"
-                />
-              ) : (
-                <span>{user?.name?.charAt(0) || "U"}</span>
-              )}
+          <div
+            className={`flex items-center gap-4 pl-6 border-l border-slate-200  dark:border-slate-500`}
+          >
+            <div className="hidden sm:flex flex-col items-end">
+              <span className="text-[13px] font-black text-slate-800 dark:text-slate-100 tracking-tight leading-none uppercase">
+                {user?.name || "User"}
+              </span>
+              <span className="text-[9px] font-black text-purple-500 dark:text-purple-300 uppercase tracking-[0.15em] mt-1 bg-purple-50 dark:bg-purple-200/10 px-1.5 py-0.5 rounded-md">
+                {user?.role || "Member"}
+              </span>
+            </div>
 
-              {/* Small Bottom-Right Arrow Badge */}
-              <div
-                className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-white dark:bg-slate-200 border-2 border-slate-100 dark:border-slate-800 flex items-center justify-center shadow-sm transition-transform duration-300 ${
-                  isDropdownOpen ? "rotate-180" : "rotate-0"
+            <div className="relative" ref={dropdownRef}>
+              {/* Trigger Avatar */}
+              <button
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className={`relative w-10 h-10 rounded-2xl flex items-center justify-center overflow-hidden shadow-lg transition-all duration-300 ring-offset-2 dark:ring-offset-slate-900 cursor-pointer ${
+                  isDropdownOpen
+                    ? "ring-2 ring-purple-500 scale-95"
+                    : "hover:scale-105 active:scale-95"
+                } ${
+                  !profile?.profilePhoto
+                    ? "bg-linear-to-tr from-purple-400 to-purple-600 text-white font-black uppercase text-sm"
+                    : ""
                 }`}
               >
-                <ChevronDown
-                  size={10}
-                  className={
-                    isDropdownOpen ? "text-purple-600" : "text-slate-500"
-                  }
-                />
-              </div>
-            </button>
+                {profile?.profilePhoto && !isLoading ? (
+                  <Image
+                    src={profile.profilePhoto}
+                    alt={user?.name || "User Avatar"}
+                    fill
+                    className="object-cover"
+                    sizes="40px"
+                  />
+                ) : (
+                  <span>{user?.name?.charAt(0) || "U"}</span>
+                )}
 
-            {/* Premium Animated Dropdown */}
-            {isDropdownOpen && (
-              <div className="absolute top-full right-0 mt-3 w-56 bg-white dark:bg-dropdown-background border border-slate-100 dark:border-slate-700 rounded-3xl shadow-2xl z-60 overflow-hidden animate-in fade-in zoom-in-95 duration-200 origin-top-right">
-                {/* User Header Section */}
-                <div className="p-4 bg-slate-50/50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-700">
-                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">
-                    Signed in as
-                  </p>
-                  <p className="text-sm font-bold text-slate-800 dark:text-white truncate">
-                    {user?.email}
-                  </p>
+                {/* Small Bottom-Right Arrow Badge */}
+                <div
+                  className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-white dark:bg-slate-200 border-2 border-slate-100 dark:border-slate-800 flex items-center justify-center shadow-sm transition-transform duration-300 ${
+                    isDropdownOpen ? "rotate-180" : "rotate-0"
+                  }`}
+                >
+                  <ChevronDown
+                    size={10}
+                    className={
+                      isDropdownOpen ? "text-purple-600" : "text-slate-500"
+                    }
+                  />
                 </div>
+              </button>
 
-                {/* Menu Options */}
-                <div className="p-2">
-                  {/* <Link
+              {/* Premium Animated Dropdown */}
+              {isDropdownOpen && (
+                <div className="absolute top-full right-0 mt-3 w-56 bg-white dark:bg-dropdown-background border border-slate-100 dark:border-slate-700 rounded-3xl shadow-2xl z-60 overflow-hidden animate-in fade-in zoom-in-95 duration-200 origin-top-right">
+                  {/* User Header Section */}
+                  <div className="p-4 bg-slate-50/50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-700">
+                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">
+                      Signed in as
+                    </p>
+                    <p className="text-sm font-bold text-slate-800 dark:text-white truncate">
+                      {user?.email}
+                    </p>
+                  </div>
+
+                  {/* Menu Options */}
+                  <div className="p-2">
+                    {/* <Link
                     href="/dashboard/profile"
                     onClick={() => setIsDropdownOpen(false)}
                     className="w-full flex items-center gap-3 px-3 py-2.5 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 dark:hover:text-purple-400 rounded-xl transition-colors group"
@@ -152,41 +164,71 @@ export default function DashboardTopNav() {
                     <span>View Profile</span>
                   </Link> */}
 
-                  <Link
-                    href="/dashboard/settings"
-                    onClick={() => setIsDropdownOpen(false)}
-                    className="w-full flex items-center gap-3 px-3 py-2.5 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 dark:hover:text-purple-400 rounded-xl transition-colors group"
-                  >
-                    <div className="p-1.5 bg-white dark:bg-slate-700 rounded-lg shadow-sm border border-slate-100 dark:border-slate-600 group-hover:border-purple-200 transition-colors">
-                      <Settings size={14} />
-                    </div>
-                    <span>Settings</span>
-                  </Link>
-                </div>
+                    <Link
+                      href="/dashboard/settings"
+                      onClick={() => setIsDropdownOpen(false)}
+                      className="w-full flex items-center gap-3 px-3 py-2.5 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 dark:hover:text-purple-400 rounded-xl transition-colors group"
+                    >
+                      <div className="p-1.5 bg-white dark:bg-slate-700 rounded-lg shadow-sm border border-slate-100 dark:border-slate-600 group-hover:border-purple-200 transition-colors">
+                        <Settings size={14} />
+                      </div>
+                      <span>Settings</span>
+                    </Link>
+                  </div>
 
-                {/* Footer Section (Logout) */}
-                <div className="p-2 border-t border-slate-100 dark:border-slate-700 bg-slate-50/30 dark:bg-slate-800/30">
-                  <button
-                    onClick={() => {
-                      setIsDropdownOpen(false);
-                      logoutMutate();
-                    }}
-                    disabled={isPending}
-                    className="w-full flex items-center gap-3 px-3 py-2.5 text-sm font-black text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-colors cursor-pointer"
-                  >
-                    <div className="p-1.5 bg-white dark:bg-slate-700 rounded-lg shadow-sm border border-slate-100 dark:border-slate-600 group-hover:border-rose-200 transition-colors">
-                      <LogOut size={14} />
-                    </div>
-                    <span className="uppercase tracking-widest text-[11px]">
-                      {isPending ? "Exiting..." : "Sign Out"}
-                    </span>
-                  </button>
+                  {/* Footer Section (Logout) */}
+                  <div className="p-2 border-t border-slate-100 dark:border-slate-700 bg-slate-50/30 dark:bg-slate-800/30">
+                    <button
+                      onClick={() => {
+                        setIsDropdownOpen(false);
+                        logoutMutate();
+                      }}
+                      disabled={isPending}
+                      className="w-full flex items-center gap-3 px-3 py-2.5 text-sm font-black text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-colors cursor-pointer"
+                    >
+                      <div className="p-1.5 bg-white dark:bg-slate-700 rounded-lg shadow-sm border border-slate-100 dark:border-slate-600 group-hover:border-rose-200 transition-colors">
+                        <LogOut size={14} />
+                      </div>
+                      <span className="uppercase tracking-widest text-[11px]">
+                        {isPending ? "Exiting..." : "Sign Out"}
+                      </span>
+                    </button>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+
+      {/* MOBILE DRAWER OVERLAY */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="fixed inset-0 bg-black/50 z-60 lg:hidden"
+            />
+
+            {/* Sidebar Content */}
+            <motion.div
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="fixed inset-y-0 left-0 bg-purple-50 dark:bg-zinc-800 z-70 lg:hidden shadow-2xl"
+            >
+              <div className="h-full overflow-y-auto">
+                <DashboardNav closeMenu={() => setIsMobileMenuOpen(false)} />
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

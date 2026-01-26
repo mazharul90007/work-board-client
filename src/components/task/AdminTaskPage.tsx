@@ -12,6 +12,7 @@ import { Loader2, PlusCircle, RefreshCcw } from "lucide-react";
 import { useGetUsers } from "@/src/hooks/use-users";
 import CreateTaskModal from "@/src/components/task/CreateTaskModal";
 import UpdateTaskModal from "@/src/components/task/UpdateTaskModal";
+import { UserRole } from "@/src/interfaces/user.interface";
 
 const AdminTaskPage = () => {
   const [page, setPage] = useState(1);
@@ -97,12 +98,13 @@ const AdminTaskPage = () => {
   };
 
   return (
-    <div className="p-8 min-h-screen bg-white/80 dark:bg-background space-y-6">
+    <div className="space-y-6">
       {/* Header Section */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-4xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
-            Admin <span className="text-purple-600">Workspaces</span>
+            {user?.role === UserRole.ADMIN ? "Admin" + " " : "Leader" + " "}
+            <span className="text-purple-600">Workspaces</span>
           </h1>
           <p className="text-slate-500 dark:text-dark-secondary font-medium mt-1">
             Manage and track your teams progress.
@@ -114,7 +116,7 @@ const AdminTaskPage = () => {
           user?.role === "LEADER") && (
           <button
             onClick={() => setIsCreateModalOpen(true)}
-            className="flex items-center bg-purple-500 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-medium shadow-sm transition-all gap-2 cursor-pointer"
+            className="flex items-center justify-center bg-purple-500 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-medium shadow-sm transition-all gap-2 cursor-pointer"
           >
             <PlusCircle size={18} />
             Add Task
@@ -123,10 +125,10 @@ const AdminTaskPage = () => {
       </div>
 
       {/* Toolbar */}
-      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 bg-white dark:bg-card-main p-4 mb-6 rounded-xl border border-gray-200 dark:border-card-border-secondary shadow-sm">
+      <div className="flex flex-col sm:flex-row md:justify-between items-start md:items-center gap-4 bg-white dark:bg-card-main p-4 mb-6 rounded-xl border border-gray-200 dark:border-card-border-secondary shadow-sm">
         <TaskViewToggle view={view} onChange={setView} />
 
-        <div className="flex items-center gap-3 w-full sm:w-auto">
+        <div className="flex items-center gap-1 md:gap-3 w-full sm:w-auto">
           <TaskFilters
             status={status}
             priority={priority}

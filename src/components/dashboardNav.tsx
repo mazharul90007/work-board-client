@@ -11,6 +11,7 @@ import {
   LineChart,
   ShieldCheck,
   Settings,
+  CircleX,
 } from "lucide-react";
 import { UserRole } from "../interfaces/user.interface";
 import { useAuthStore } from "../stores/useAuthStore";
@@ -35,7 +36,11 @@ const menuItems = [
   { name: "Settings", icon: Settings, href: "/dashboard/settings" },
 ];
 
-export default function DashboardNav() {
+export default function DashboardNav({
+  closeMenu,
+}: {
+  closeMenu?: () => void;
+}) {
   const pathname = usePathname();
   const user = useAuthStore((state) => state.user);
   const userRole = user?.role;
@@ -50,15 +55,24 @@ export default function DashboardNav() {
   });
 
   return (
-    <div className="flex flex-col h-full p-4 bg-purple-50 dark:bg-zinc-800 sticky top-0 z-50">
+    <div className="flex flex-col h-screen p-2 md:p-4 bg-purple-50 dark:bg-zinc-800 sticky top-0 z-50">
       {/* Logo Area */}
-      <div className="flex items-center gap-2 px-2 mb-8">
-        <div className="bg-purple-500 p-1.5 rounded-lg">
-          <CheckSquare className="text-white" size={20} />
+      <div className="flex items-center justify-between gap-2 mb-8">
+        <div className="flex items-center gap-2 px-2">
+          <div className="bg-purple-500 p-1.5 rounded-lg">
+            <CheckSquare className="text-white" size={20} />
+          </div>
+          <span className="hidden lg:block text-xl font-bold text-slate-800 dark:text-dark-primary tracking-tight">
+            Work Board
+          </span>
         </div>
-        <span className="text-xl font-bold text-slate-800 dark:text-dark-primary tracking-tight">
-          Work Board
-        </span>
+
+        {/* Close Button (Visible only on mobile inside the drawer) */}
+        {closeMenu && (
+          <button onClick={closeMenu} className="lg:hidden p-2 text-slate-400">
+            <CircleX size={20} className="" />
+          </button>
+        )}
       </div>
 
       <nav className="space-y-1">
@@ -81,7 +95,7 @@ export default function DashboardNav() {
                 size={20}
                 className={isActive ? "text-purple-500" : "text-slate-400"}
               />
-              {item.name}
+              <span className="">{item.name}</span>
             </Link>
           );
         })}

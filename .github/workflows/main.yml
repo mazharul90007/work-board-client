@@ -3,6 +3,8 @@ name: Work-board-client with Caching & Artifacts
 on: 
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
   build:
